@@ -48,7 +48,7 @@ fn HomeHero() -> impl IntoView {
                         "世界"
                     </h1>
                     <p class="lede">
-                        "一个由梦想家、工程师与艺术家组成的工作室。以结构主义的几何秩序与瑞士国际主义的网格理性，重新组织互动娱乐的表达。"
+                        "一个由梦想家、工程师与艺术家组成的工作室。以构成主义的几何秩序、斜切色块与生产力，重新组织互动娱乐的表达。"
                     </p>
                     <div class="home-hero__actions">
                         <a href="#games" class="btn btn--solid">"查看作品"</a>

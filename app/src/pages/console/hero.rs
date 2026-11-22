@@ -23,12 +23,12 @@ const SLOTS: [Slot; 5] = [
         key: "TITLE",
         label: "主标题",
         value: "我们创造 / 虚拟 / 世界",
-        rule: "三行断句，强调色仅用于第二行",
+        rule: "三行断句，第二行使用红色色块",
     },
     Slot {
         key: "LEDE",
         label: "引导文本",
-        value: "结构主义几何秩序与瑞士国际主义网格理性",
+        value: "构成主义几何秩序、斜切色块与生产力",
         rule: "不超过两行，宽度不超过 60ch",
     },
     Slot {
@@ -57,7 +57,7 @@ pub fn HeroConfig() -> impl IntoView {
                 <span class="eyebrow">"Composition"</span>
                 <h1 class="console-page-title">"Hero 配置"</h1>
                 <p class="console-page-lede">
-                    "首页首屏的内容槽位与排版约束。当前版本将文案视为设计系统的一部分，修改需同步 SCSS 断点。"
+                    "纯构成主义分支的首页首屏内容槽位与排版约束。当前版本将文案视为设计系统的一部分，修改需同步 SCSS 断点。"
                 </p>
             </div>
             <span class="mono console-page-code">"02 / HERO"</span>
@@ -90,23 +90,23 @@ pub fn HeroConfig() -> impl IntoView {
 
         <div class="admin-grid">
             <Panel class="admin-panel">
-                <span class="eyebrow">"Grid"</span>
-                <h2 class="admin-panel__title">"12 列网格"</h2>
+                <span class="eyebrow">"Geometry"</span>
+                <h2 class="admin-panel__title">"斜切几何"</h2>
                 <p class="admin-panel__text">
-                    "桌面端 12 列，间距随视口在 24–48px 之间变化；移动端折叠为单列，保留编号与分隔线。"
+                    "以不对称网格、斜切色块、粗描边与硬阴影构成页面；拒绝柔和圆角与低对比装饰。"
                 </p>
                 <div class="tag-row">
-                    <Tag label="12 COL"/>
-                    <Tag label="GUTTER 24–48"/>
-                    <Tag label="MAX 1440"/>
+                    <Tag label="SKEW"/>
+                    <Tag label="HARD SHADOW"/>
+                    <Tag label="THICK BORDER"/>
                 </div>
             </Panel>
 
             <Panel dark=true class="admin-panel">
                 <span class="eyebrow">"Contrast"</span>
-                <h2 class="admin-panel__title">"色彩约束"</h2>
+                <h2 class="admin-panel__title">"三色限制"</h2>
                 <p class="admin-panel__text">
-                    "纸白、炭黑与单一正红。强调色只用于主操作与关键编号，不用于装饰性背景。"
+                    "仅使用米白、炭黑与信号红三色。红色用于宣传条、关键编号、主操作与大面积切角。"
                 </p>
                 <div class="tag-row">
                     <Tag label="PAPER"/>

@@ -1,6 +1,12 @@
 # asdfri
 
-ASDF Studio 官网与管理控制台。基于 Leptos + Axum 的 SSR Workspace，采用构成主义与瑞士国际主义的视觉体系。
+ASDF Studio 官网与管理控制台 · `pure-constructivism` 分支。基于 Leptos + Axum 的 SSR Workspace，采用纯构成主义视觉：红、黑、米白、斜切几何、硬阴影与宣传海报式排版。
+
+## 视觉分支
+
+- `main`：构成主义与瑞士国际主义混合版本。
+- `pure-constructivism`：纯构成主义版本。仅使用红、黑、米白三色；强调斜切色块、硬阴影、密集排版、宣传条与宣言式页脚。
+- 页面根节点带有 `data-variant="constructivist"` 标记，便于自动化测试与样式定位。
 
 ## 架构
 

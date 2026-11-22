@@ -24,11 +24,12 @@ use crate::{
 pub fn shell(options: LeptosOptions) -> impl IntoView {
     view! {
         <!DOCTYPE html>
-        <html lang="zh-CN">
+        <html lang="zh-CN" data-variant="constructivist">
             <head>
                 <meta charset="utf-8"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1"/>
                 <meta name="color-scheme" content="light"/>
+                <meta name="theme-color" content="#0b0b0b"/>
                 <link rel="icon" href="/favicon.ico"/>
                 <AutoReload options=options.clone()/>
                 <HydrationScripts options/>

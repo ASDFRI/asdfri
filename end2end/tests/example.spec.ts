@@ -10,6 +10,14 @@ test("首页渲染并展示内容", async ({ page }) => {
   await expect(page.getByText("蜂巢盛宴").first()).toBeVisible();
 });
 
+test("纯构成主义分支标记", async ({ page }) => {
+  await page.goto("/");
+
+  await expect(page.locator("html")).toHaveAttribute("data-variant", "constructivist");
+  await expect(page.locator(".agitation-strip")).toBeVisible();
+  await expect(page.locator(".footer-manifesto")).toBeVisible();
+});
+
 test("作品页与 Singularis 页可访问", async ({ page }) => {
   await page.goto("/games");
   await expect(page).toHaveTitle("Games — ASDF Studio");
@@ -30,6 +38,7 @@ test("控制台展示登录入口", async ({ page }) => {
 
 test("管理员登录与编辑对话框回填", async ({ page }) => {
   await page.goto("/console");
+  await page.waitForSelector('html[data-hydrated="true"]');
   await page.getByRole("button", { name: "登录" }).click();
 
   const login = page.getByRole("dialog", { name: "登录控制台" });
@@ -41,6 +50,7 @@ test("管理员登录与编辑对话框回填", async ({ page }) => {
   await expect(page.getByText("已认证")).toBeVisible();
 
   await page.goto("/console/games");
+  await page.waitForSelector('html[data-hydrated="true"]');
   await expect(page.getByRole("heading", { name: "游戏配置" })).toBeVisible();
   await page.getByRole("button", { name: "编辑" }).first().click();
 
@@ -70,6 +80,7 @@ test("团队成员与作品图片可加载", async ({ page }) => {
 test("移动端菜单可导航并自动关闭", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
+  await page.waitForSelector('html[data-hydrated="true"]');
 
   await page.locator(".nav-mobile__toggle").click();
   const panel = page.locator(".nav-mobile__panel");
@@ -82,6 +93,7 @@ test("移动端菜单可导航并自动关闭", async ({ page }) => {
 
 test("管理员可上传截图资产", async ({ page }) => {
   await page.goto("/console");
+  await page.waitForSelector('html[data-hydrated="true"]');
   await page.getByRole("button", { name: "登录" }).click();
 
   const login = page.getByRole("dialog", { name: "登录控制台" });
@@ -91,6 +103,7 @@ test("管理员可上传截图资产", async ({ page }) => {
   await expect(page.getByText("已认证")).toBeVisible();
 
   await page.goto("/console/games");
+  await page.waitForSelector('html[data-hydrated="true"]');
   await page.getByRole("button", { name: "编辑" }).first().click();
 
   const editor = page.getByRole("dialog", { name: "游戏档案" });

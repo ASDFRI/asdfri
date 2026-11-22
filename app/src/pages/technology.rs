@@ -202,7 +202,7 @@ pub fn TechnologyPage() -> impl IntoView {
 #[component]
 fn TechnologyHero() -> impl IntoView {
     view! {
-        <section class="page-hero">
+        <section id="tech-hero" class="page-hero">
             <div class="shell page-hero__grid">
                 <span class="index-mark">"02"</span>
                 <div class="page-hero__text">
@@ -239,7 +239,7 @@ fn TechnologyHero() -> impl IntoView {
 #[component]
 fn EnginesSection() -> impl IntoView {
     view! {
-        <section class="section section--ink">
+        <section id="core-engines" class="section section--ink">
             <div class="shell">
                 <SectionHead
                     index="02.1"
@@ -294,7 +294,7 @@ fn EnginesSection() -> impl IntoView {
 #[component]
 fn PipelineSection() -> impl IntoView {
     view! {
-        <section class="section">
+        <section id="art-pipeline" class="section">
             <div class="shell">
                 <SectionHead
                     index="02.2"
@@ -328,7 +328,7 @@ fn PipelineSection() -> impl IntoView {
 #[component]
 fn InnovationSection() -> impl IntoView {
     view! {
-        <section class="section section--ink">
+        <section id="innovation" class="section section--ink">
             <div class="shell innovation">
                 <div class="innovation__text">
                     <SectionHead
@@ -370,7 +370,7 @@ fn InnovationSection() -> impl IntoView {
 #[component]
 fn InfrastructureSection() -> impl IntoView {
     view! {
-        <section class="section">
+        <section id="infrastructure" class="section">
             <div class="shell">
                 <SectionHead
                     index="02.4"
@@ -413,7 +413,7 @@ fn InfrastructureSection() -> impl IntoView {
 #[component]
 fn AestheticsSection() -> impl IntoView {
     view! {
-        <section class="section section--ink">
+        <section id="aesthetics" class="section section--ink">
             <div class="shell">
                 <SectionHead
                     index="02.5"
