@@ -1,0 +1,24 @@
+[package]
+name = "app"
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+version.workspace = true
+
+[dependencies]
+# 工作空间
+api.workspace = true
+ui.workspace = true
+
+# Leptos 核心
+leptos.workspace = true
+leptos_meta.workspace = true
+leptos_router.workspace = true
+
+# Web 与浏览器
+web-sys.workspace = true
+
+[features]
+default = []
+hydrate = ["leptos/hydrate", "api/hydrate", "ui/hydrate"]
+ssr = ["leptos/ssr", "leptos_meta/ssr", "leptos_router/ssr", "api/ssr", "ui/ssr"]
