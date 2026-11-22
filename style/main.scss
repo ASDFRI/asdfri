@@ -4854,3 +4854,71 @@ p {
     gap: 0.8rem;
   }
 }
+
+// 小字号对比度修正：红底使用深红，黑底使用纸白
+.nav-link__index {
+  color: #c8c2b7;
+}
+
+.nav-link:hover .nav-link__index,
+.nav-link[aria-current="page"] .nav-link__index {
+  color: var(--paper);
+}
+
+.footer-manifesto__index,
+.site-footer__legal a:hover {
+  color: var(--paper);
+}
+
+.section--ink .arrow-link:hover {
+  color: var(--paper);
+  border-bottom-color: var(--paper);
+}
+
+.agitation-strip,
+.btn:hover:not(:disabled),
+.btn--solid:hover:not(:disabled),
+.btn--accent,
+.section--ink .btn--outline:hover:not(:disabled),
+.site-header .btn--outline:hover:not(:disabled),
+.nav-link:hover,
+.nav-link[aria-current="page"],
+.nav-mobile__link:hover,
+.nav-mobile__link[aria-current="page"],
+.hero-matrix__item:hover,
+.home-hero__media-tag,
+.news-card__kind,
+.case__status,
+.chapter__time,
+.tag--accent,
+.lock-panel,
+.console-page-code,
+.auth-chip--online,
+.console-nav__item[aria-current="page"],
+.job:hover,
+.aesthetic-card:nth-child(2n),
+.section--ink .section-head__index,
+.terminal__tag--fail,
+.upload__remove:hover,
+.screening__frame:hover .screening__play {
+  background: var(--red-deep);
+}
+
+.btn--ghost:hover:not(:disabled),
+.arrow-link:hover,
+.dossier .arrow-link:hover,
+.person__role,
+.infra-card__metric,
+.empty-state .mono,
+.stat--error .mono,
+.console-loading,
+.admin-row__meta a,
+.module-card:nth-child(2n) .module-card__status {
+  color: var(--red-deep);
+}
+
+.arrow-link:hover,
+.dossier .arrow-link:hover,
+.screening__frame:hover .screening__play {
+  border-color: var(--red-deep);
+}
