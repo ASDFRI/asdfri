@@ -1,6 +1,9 @@
+use api::site::SiteVariant;
 use leptos::prelude::*;
 use leptos_router::components::{A, Outlet};
 use ui::Tag;
+
+use crate::site::SiteVariantSignal;
 
 /// 站内导航条目
 fn nav_items() -> &'static [(&'static str, &'static str, &'static str)] {
@@ -12,11 +15,46 @@ fn nav_items() -> &'static [(&'static str, &'static str, &'static str)] {
     ]
 }
 
-/// 公开站点布局：页头、路由出口与页脚
+/// 纯构成主义宣传条文本
+const AGITATION: [&str; 5] =
+    ["构成主义", "CONSTRUCTIVISM", "几何 · 秩序 · 生产", "NO DECORATION", "ASDF / 2026"];
+
+/// 宣传条内容组
+#[component]
+fn AgitationGroup() -> impl IntoView {
+    view! {
+        <div class="agitation-strip__group">
+            {AGITATION
+                .into_iter()
+                .map(|text| view! { <span>{text}</span> })
+                .collect_view()}
+        </div>
+    }
+}
+
+/// 纯构成主义宣传条
+#[component]
+fn AgitationStrip() -> impl IntoView {
+    view! {
+        <div class="agitation-strip" aria-hidden="true">
+            <div class="agitation-strip__track">
+                <AgitationGroup/>
+                <AgitationGroup/>
+            </div>
+        </div>
+    }
+}
+
+/// 公开站点布局：页头、风格化宣传条、路由出口与页脚
 #[component]
 pub fn SiteLayout() -> impl IntoView {
+    let variant = SiteVariantSignal::use_state();
+
     view! {
         <SiteHeader/>
+        {move || {
+            (variant.get() == SiteVariant::Constructivist).then(|| view! { <AgitationStrip/> })
+        }}
         <main id="main"><Outlet/></main>
         <SiteFooter/>
     }
@@ -114,13 +152,39 @@ pub fn SiteHeader() -> impl IntoView {
 /// 全局页脚
 #[component]
 pub fn SiteFooter() -> impl IntoView {
+    let variant = SiteVariantSignal::use_state();
+
     view! {
         <footer class="site-footer">
+            {move || {
+                (variant.get() == SiteVariant::Constructivist)
+                    .then(|| {
+                        view! {
+                            <div class="shell footer-manifesto">
+                                <div class="footer-manifesto__text">
+                                    <span class="mono footer-manifesto__index">"// MANIFESTO"</span>
+                                    <p>"不装饰世界。组织世界。"</p>
+                                </div>
+                                <span class="mono footer-manifesto__en">
+                                    "DO NOT DECORATE. ORGANIZE."
+                                </span>
+                            </div>
+                        }
+                    })
+            }}
+
             <div class="shell site-footer__grid">
                 <div class="site-footer__brand">
                     <span class="eyebrow">"ASDF Studio"</span>
                     <p class="site-footer__statement">
-                        "以严格的网格、克制的线条与明确的层级，构建可被检验的交互体验。"
+                        {move || match variant.get() {
+                            SiteVariant::Swiss => {
+                                "以严格的网格、克制的线条与明确的层级，构建可被检验的交互体验。"
+                            }
+                            SiteVariant::Constructivist => {
+                                "红、黑、米白。用几何、色块与生产力组织世界，而不是装饰世界。"
+                            }
+                        }}
                     </p>
                 </div>
 

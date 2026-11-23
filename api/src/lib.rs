@@ -7,5 +7,6 @@ pub mod auth;
 mod error;
 pub mod game;
 pub mod member;
+pub mod site;
 pub mod upload;
 pub mod user;

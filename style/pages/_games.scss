@@ -1,0 +1,138 @@
+// 作品页。
+
+.case-list {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(3rem, 6vw, 6rem);
+}
+
+.case {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1.5rem, 4vw, 4rem);
+  align-items: center;
+  padding-top: clamp(1.5rem, 3vw, 2.5rem);
+  border-top: 4px solid var(--line);
+}
+
+.case--reverse .case__media {
+  order: 2;
+}
+
+.case--reverse .case__body {
+  order: 1;
+}
+
+.case--amber {
+  border-top-color: #c08a2a;
+}
+
+.case--cyan {
+  border-top-color: #2f8f9e;
+}
+
+.case--sand {
+  border-top-color: #b98a5e;
+}
+
+.case--blue {
+  border-top-color: #3e62b6;
+}
+
+.case--rose {
+  border-top-color: #a5526e;
+}
+
+.case--red {
+  border-top-color: var(--red);
+}
+
+.case__media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--paper-deep);
+}
+
+.case__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.05);
+  transition: filter 0.6s var(--ease), transform 0.7s var(--ease);
+}
+
+.case:hover .case__media img {
+  filter: grayscale(0);
+  transform: scale(1.03);
+}
+
+.case__status {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  padding: 0.4rem 0.65rem;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 0.56rem;
+  font-weight: 700;
+}
+
+.case__body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.case__meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.case__index {
+  color: var(--red);
+  font-size: 0.62rem;
+  font-weight: 700;
+}
+
+.case__subtitle {
+  color: var(--muted);
+  font-size: 0.6rem;
+}
+
+.case__title {
+  font-size: clamp(2rem, 4vw, 3.8rem);
+  line-height: 0.92;
+  letter-spacing: -0.045em;
+  font-weight: 800;
+}
+
+.case__text {
+  max-width: 52ch;
+  color: var(--ink-soft);
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.cta-band {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.cta-band__title {
+  margin-block: 0.8rem;
+}
+
+.cta-band__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}

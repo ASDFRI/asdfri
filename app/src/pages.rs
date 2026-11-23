@@ -11,6 +11,7 @@ pub use console::dashboard::Dashboard;
 pub use console::game::GameAdmin;
 pub use console::hero::HeroConfig;
 pub use console::member::MemberAdmin;
+pub use console::theme::ThemeAdmin;
 pub use games::GamesPage;
 pub use home::HomePage;
 pub use not_found::NotFound;

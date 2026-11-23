@@ -1,0 +1,98 @@
+// 通用页面首屏、箭头链接与提示条。
+
+.page-hero {
+  padding-block: clamp(3.5rem, 8vw, 8rem);
+  border-bottom: 1px solid var(--line);
+}
+
+.page-hero--compact {
+  padding-block: clamp(2.5rem, 5vw, 5rem);
+}
+
+.page-hero__grid {
+  display: grid;
+  grid-template-columns: 4rem minmax(0, 1.3fr) minmax(16rem, 0.8fr);
+  gap: clamp(1.5rem, 4vw, 4rem);
+  align-items: start;
+}
+
+.page-hero__text {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.page-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  margin-top: 0.5rem;
+}
+
+.hero-matrix {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 0.5rem;
+  padding-top: 0.4rem;
+}
+
+.hero-matrix__item {
+  padding: 0.45rem 0.65rem;
+  border: 1px solid var(--line-soft);
+  color: var(--ink-soft);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: none;
+  transition: background 0.18s var(--ease), color 0.18s var(--ease),
+    border-color 0.18s var(--ease);
+}
+
+.hero-matrix__item:hover {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+
+.arrow-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  width: fit-content;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: color 0.18s var(--ease), border-color 0.18s var(--ease);
+}
+
+.arrow-link__mark {
+  transition: transform 0.18s var(--ease);
+}
+
+.arrow-link:hover {
+  color: var(--red);
+  border-bottom-color: var(--red);
+}
+
+.arrow-link:hover .arrow-link__mark {
+  transform: translateX(4px);
+}
+
+.notice {
+  padding: 1.1rem 1.3rem;
+  border: 1px dashed var(--line-soft);
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+}
+
+.notice--error {
+  border-color: var(--red);
+  color: var(--red-deep);
+}

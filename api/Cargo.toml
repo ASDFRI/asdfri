@@ -8,7 +8,7 @@ version.workspace = true
 [dependencies]
 # 工作空间
 infra = { workspace = true, optional = true }
-domain = { workspace = true, optional = true }
+domain.workspace = true
 
 # Leptos 核心
 leptos.workspace = true
@@ -24,4 +24,4 @@ tracing = { workspace = true, optional = true }
 [features]
 default = []
 hydrate = ["leptos/hydrate"]
-ssr = ["leptos/ssr", "dep:infra", "dep:domain", "dep:tracing"]
+ssr = ["leptos/ssr", "dep:infra", "dep:tracing"]

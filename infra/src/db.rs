@@ -2,6 +2,7 @@
 
 pub mod game;
 pub mod member;
+pub mod site;
 pub mod user;
 
 use sqlx::{SqlitePool, sqlite::SqlitePoolOptions};

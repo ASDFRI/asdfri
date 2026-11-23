@@ -1,0 +1,228 @@
+// 按钮、标签与面板。
+
+.btn {
+  --btn-bg: transparent;
+  --btn-fg: var(--ink);
+  --btn-line: var(--line);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  min-height: 3rem;
+  padding: 0.85rem 1.5rem;
+  border: 1px solid var(--btn-line);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: background 0.18s var(--ease), color 0.18s var(--ease),
+    border-color 0.18s var(--ease), transform 0.18s var(--ease);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
+}
+
+.btn:hover:not(:disabled) {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.btn--solid {
+  --btn-bg: var(--ink);
+  --btn-fg: var(--paper);
+  --btn-line: var(--ink);
+}
+
+.btn--solid:hover:not(:disabled) {
+  --btn-bg: var(--red);
+  --btn-fg: #fff;
+  --btn-line: var(--red);
+}
+
+.btn--accent {
+  --btn-bg: var(--red);
+  --btn-fg: #fff;
+  --btn-line: var(--red);
+}
+
+.btn--accent:hover:not(:disabled) {
+  --btn-bg: var(--ink);
+  --btn-fg: var(--paper);
+  --btn-line: var(--ink);
+}
+
+.btn--outline {
+  --btn-bg: transparent;
+  --btn-fg: var(--ink);
+  --btn-line: var(--line);
+}
+
+.btn--ghost {
+  --btn-bg: transparent;
+  --btn-fg: var(--ink);
+  --btn-line: transparent;
+}
+
+.btn--ghost:hover:not(:disabled) {
+  --btn-bg: transparent;
+  --btn-fg: var(--red);
+  --btn-line: transparent;
+}
+
+.btn--danger {
+  --btn-bg: var(--red-deep);
+  --btn-fg: #fff;
+  --btn-line: var(--red-deep);
+}
+
+.btn--danger:hover:not(:disabled) {
+  --btn-bg: var(--ink);
+  --btn-fg: var(--paper);
+  --btn-line: var(--ink);
+}
+
+.btn--sm {
+  min-height: 2.35rem;
+  padding: 0.5rem 0.95rem;
+  font-size: 0.62rem;
+}
+
+.btn--block {
+  width: 100%;
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.2rem;
+  min-height: 2.2rem;
+  padding: 0.35rem 0.6rem;
+  border: 1px solid var(--line-soft);
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: background 0.18s var(--ease), color 0.18s var(--ease),
+    border-color 0.18s var(--ease);
+}
+
+.icon-btn:hover:not(:disabled) {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+.icon-btn:disabled {
+  opacity: 0.28;
+  cursor: not-allowed;
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.28rem 0.6rem;
+  border: 1px solid var(--line-soft);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+.tag--outline {
+  color: var(--ink-soft);
+}
+
+.tag--solid {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+
+.tag--accent {
+  background: var(--red);
+  border-color: var(--red);
+  color: #fff;
+}
+
+.section--ink .tag--outline {
+  border-color: rgba(243, 240, 233, 0.24);
+  color: #c8c2b7;
+}
+
+.section--ink .btn--outline {
+  --btn-fg: var(--paper);
+  --btn-line: rgba(243, 240, 233, 0.45);
+}
+
+.section--ink .btn--outline:hover:not(:disabled) {
+  --btn-bg: var(--paper);
+  --btn-fg: var(--ink);
+  --btn-line: var(--paper);
+}
+
+.section--ink .btn--ghost {
+  --btn-fg: var(--paper);
+}
+
+.section--ink .arrow-link {
+  border-bottom-color: rgba(243, 240, 233, 0.45);
+  color: var(--paper);
+}
+
+.section--ink .arrow-link:hover {
+  border-bottom-color: var(--red);
+  color: var(--red);
+}
+
+.section--ink .notice {
+  border-color: rgba(243, 240, 233, 0.28);
+  color: #c8c2b7;
+}
+
+.panel {
+  padding: clamp(1.3rem, 2.4vw, 2rem);
+  border: 1px solid var(--line-soft);
+  background: var(--white);
+}
+
+.panel--dark {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+
+.panel--dark .eyebrow {
+  color: #a8a399;
+}
+
+.panel--dark .btn--ghost {
+  --btn-fg: var(--paper);
+}
+
+.panel--dark .tag--outline {
+  border-color: rgba(243, 240, 233, 0.24);
+  color: #c8c2b7;
+}

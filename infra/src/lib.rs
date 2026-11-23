@@ -14,4 +14,4 @@ pub mod upload;
 pub use config::AppConfig;
 pub use domain::{Game, Member, User};
 pub use error::AppError;
-pub use state::AppState;
+pub use state::{AppState, SiteTheme};

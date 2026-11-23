@@ -1,0 +1,67 @@
+// 区块留白与章节标题。
+
+.section {
+  padding-block: clamp(4.5rem, 9vw, 9rem);
+  border-top: 1px solid var(--line);
+}
+
+.section--ink {
+  background: var(--ink);
+  color: var(--paper);
+  border-top-color: var(--ink);
+}
+
+.section--ink .eyebrow,
+.section--ink .lede {
+  color: #a8a399;
+}
+
+.section--ink .section-head__title {
+  color: var(--paper);
+}
+
+.section-foot {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: clamp(2rem, 4vw, 3.5rem);
+}
+
+.section-head {
+  display: grid;
+  grid-template-columns: 4rem minmax(0, 1fr);
+  gap: clamp(1rem, 3vw, 2.5rem);
+  padding-bottom: clamp(2rem, 4vw, 3.5rem);
+  margin-bottom: clamp(2rem, 4vw, 3.5rem);
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.section--ink .section-head {
+  border-bottom-color: rgba(243, 240, 233, 0.22);
+}
+
+.section-head__index {
+  padding-top: 0.35rem;
+  color: var(--red);
+  font-weight: 700;
+}
+
+.section-head__text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.section-head__title {
+  font-size: clamp(2rem, 4.4vw, 4.4rem);
+  line-height: 0.96;
+  letter-spacing: -0.04em;
+  font-weight: 800;
+  text-wrap: balance;
+}
+
+.section-head__lede {
+  max-width: 60ch;
+  color: var(--ink-soft);
+  font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+  line-height: 1.6;
+}

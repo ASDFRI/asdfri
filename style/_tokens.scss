@@ -1,0 +1,19 @@
+// 设计令牌：颜色、字体、间距与动效曲线。
+
+:root {
+  --paper: #f3f0e9;
+  --paper-deep: #e7e1d5;
+  --ink: #111110;
+  --ink-soft: #3b3a37;
+  --muted: #726e65;
+  --line: #1a1a18;
+  --line-soft: rgba(26, 26, 24, 0.16);
+  --red: #d3281f;
+  --red-deep: #a31810;
+  --white: #fff;
+  --font-sans: "Helvetica Neue", "Inter", "Noto Sans SC", "Microsoft YaHei", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --gutter: clamp(1.25rem, 4vw, 4rem);
+  --max: 1440px;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+}

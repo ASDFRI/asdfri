@@ -2,6 +2,7 @@ pub mod dashboard;
 pub mod game;
 pub mod hero;
 pub mod member;
+pub mod theme;
 
 use api::{
     auth::{Login, Logout},
@@ -100,6 +101,10 @@ fn ConsoleSidebar() -> impl IntoView {
                 <A href="/console/members" exact=true attr:class="console-nav__item">
                     <span class="mono">"04"</span>
                     <span>"成员配置"</span>
+                </A>
+                <A href="/console/theme" exact=true attr:class="console-nav__item">
+                    <span class="mono">"05"</span>
+                    <span>"站点风格"</span>
                 </A>
             </nav>
 

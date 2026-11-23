@@ -1,6 +1,14 @@
 # asdfri
 
-ASDF Studio 官网与管理控制台。基于 Leptos + Axum 的 SSR Workspace，采用构成主义与瑞士国际主义的视觉体系。
+ASDF Studio 官网与管理控制台。基于 Leptos + Axum 的 SSR Workspace，内置瑞士国际主义与纯构成主义两套视觉体系，可在控制台动态切换。
+
+## 视觉体系
+
+- `swiss`：瑞士国际主义。严格网格、克制线条与明确层级；纸白、炭黑与单一正红。
+- `constructivist`：纯构成主义。不对称网格、斜切色块、粗描边、硬阴影与宣传海报式排版。
+- 当前风格持久化在 `site_settings` 表，由 `/console/theme` 管理；写入后下一次服务端渲染生效。
+- 页面根节点带有 `data-variant` 标记，样式以 `html[data-variant="constructivist"]` 为作用域，便于自动化测试与样式定位。
+- 样式入口为 `style/main.scss`，按设计令牌、基础排版、通用组件、站点框架、页面与响应式断点拆分为多个 SCSS 分片；纯构成主义覆盖集中在 `style/_variant-constructivist.scss`。
 
 ## 架构
 
@@ -36,12 +44,14 @@ ASDF Studio 官网与管理控制台。基于 Leptos + Axum 的 SSR Workspace，
 | `/console/hero` | 首页首屏内容槽位说明 |
 | `/console/games` | 游戏档案 CRUD 与排序 |
 | `/console/members` | 成员档案 CRUD 与排序 |
+| `/console/theme` | 站点视觉风格切换（需要管理员授权） |
 
 ## 数据
 
 - 数据库：SQLite，连接串见 `config.toml` 的 `[database].url`。
 - 迁移：`migrations/`，启动时自动执行。
 - 初始内容：迁移会写入四份作品与五名成员；管理员账户同样由迁移写入，其明文密码会在首次启动时自动升级为 Argon2 哈希。
+- 站点风格：`site_settings` 单行表保存 `swiss` 或 `constructivist`，默认 `swiss`；服务端在启动时载入缓存，授权写入成功后同步更新。
 - 上传：写入 `[upload].dir`（默认 `uploads`），由 `/uploads/*` 显式提供；仅接受由魔数识别的 PNG、JPEG、GIF、WebP 与 AVIF，单文件上限 16 MiB。该目录独立于 `target/site`，重新构建不会丢失文件。
 
 ## 开发

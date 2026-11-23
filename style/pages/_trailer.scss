@@ -1,0 +1,128 @@
+// 预告片页。
+
+.screening {
+  display: grid;
+  grid-template-columns: 1.6fr 0.8fr;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: start;
+}
+
+.screening__frame {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 16 / 9;
+  background: #141311;
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+
+.screening__frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(243, 240, 233, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(243, 240, 233, 0.05) 1px, transparent 1px);
+  background-size: 3rem 3rem;
+}
+
+.screening__play {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 4.6rem;
+  height: 4.6rem;
+  border: 1px solid var(--paper);
+  color: var(--paper);
+  font-size: 1.2rem;
+  transition: background 0.2s var(--ease), color 0.2s var(--ease);
+}
+
+.screening__frame:hover .screening__play {
+  background: var(--red);
+  border-color: var(--red);
+  color: #fff;
+}
+
+.screening__label {
+  position: absolute;
+  left: 1rem;
+  bottom: 1rem;
+  color: #c8c2b7;
+  font-size: 0.6rem;
+}
+
+.screening__time {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  color: #c8c2b7;
+  font-size: 0.6rem;
+}
+
+.screening__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.meta-list {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  border-top: 1px solid var(--line-soft);
+}
+
+.meta-list__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: 0.75rem;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.meta-list__row dt {
+  color: var(--muted);
+  font-size: 0.58rem;
+}
+
+.meta-list__row dd {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.chapter-list {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid rgba(243, 240, 233, 0.22);
+}
+
+.chapter {
+  display: grid;
+  grid-template-columns: 5rem 0.7fr 1.3fr;
+  gap: 1.2rem;
+  align-items: baseline;
+  padding-block: 1.1rem;
+  border-bottom: 1px solid rgba(243, 240, 233, 0.22);
+}
+
+.chapter__time {
+  color: var(--red);
+  font-size: 0.65rem;
+}
+
+.chapter__title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--paper);
+}
+
+.chapter__body {
+  color: #bdb7ac;
+  font-size: 0.9rem;
+}

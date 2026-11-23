@@ -97,7 +97,7 @@ pub fn Dashboard() -> impl IntoView {
             </div>
         </div>
 
-        <div class="admin-grid">
+        <div class="admin-grid admin-grid--pair">
             <Panel class="admin-panel">
                 <span class="eyebrow">"Games"</span>
                 <h2 class="admin-panel__title">"游戏档案"</h2>
@@ -114,6 +114,15 @@ pub fn Dashboard() -> impl IntoView {
                     "维护团队成员的身份信息、头像与展示顺序。"
                 </p>
                 <a href="/console/members" class="btn btn--solid">"进入成员配置"</a>
+            </Panel>
+
+            <Panel class="admin-panel">
+                <span class="eyebrow">"Visual System"</span>
+                <h2 class="admin-panel__title">"站点风格"</h2>
+                <p class="admin-panel__text">
+                    "在瑞士国际主义与纯构成主义之间切换；设置持久化到数据库并作用于下一次渲染。"
+                </p>
+                <a href="/console/theme" class="btn btn--solid">"进入风格配置"</a>
             </Panel>
 
             <Panel dark=true class="admin-panel">

@@ -1,12 +1,16 @@
 use api::{
     game::{Game, get_games},
     member::{Member, get_members},
+    site::SiteVariant,
 };
 use leptos::prelude::*;
 use leptos_meta::{Meta, Title};
 use ui::{Panel, Skeleton, Tag};
 
-use crate::components::{ArrowLink, SectionHead};
+use crate::{
+    components::{ArrowLink, SectionHead},
+    site::SiteVariantSignal,
+};
 
 /// 首页
 #[component]
@@ -30,6 +34,8 @@ pub fn HomePage() -> impl IntoView {
 /// 首屏
 #[component]
 fn HomeHero() -> impl IntoView {
+    let variant = SiteVariantSignal::use_state();
+
     view! {
         <section class="home-hero">
             <div class="shell home-hero__grid">
@@ -48,7 +54,14 @@ fn HomeHero() -> impl IntoView {
                         "世界"
                     </h1>
                     <p class="lede">
-                        "一个由梦想家、工程师与艺术家组成的工作室。以结构主义的几何秩序与瑞士国际主义的网格理性，重新组织互动娱乐的表达。"
+                        {move || match variant.get() {
+                            SiteVariant::Swiss => {
+                                "一个由梦想家、工程师与艺术家组成的工作室。以结构主义的几何秩序与瑞士国际主义的网格理性，重新组织互动娱乐的表达。"
+                            }
+                            SiteVariant::Constructivist => {
+                                "一个由梦想家、工程师与艺术家组成的工作室。以构成主义的几何秩序、斜切色块与生产力，重新组织互动娱乐的表达。"
+                            }
+                        }}
                     </p>
                     <div class="home-hero__actions">
                         <a href="#games" class="btn btn--solid">"查看作品"</a>

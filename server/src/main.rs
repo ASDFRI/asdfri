@@ -7,7 +7,7 @@ use std::fs;
 
 use anyhow::anyhow;
 use axum::Router;
-use infra::{AppConfig, AppState, auth::Keys, db, telemetry};
+use infra::{AppConfig, AppState, SiteTheme, auth::Keys, db, telemetry};
 use leptos::{config::LeptosOptions, prelude::provide_context};
 use leptos_axum::{LeptosRoutes, generate_route_list};
 use tower_http::services::ServeDir;
@@ -30,13 +30,15 @@ async fn main() -> anyhow::Result<()> {
     // 4) 连接数据库并执行迁移
     let pool = db::connect(&config.database).await?;
 
-    // 5) 构建 JWT 密钥与全局状态
+    // 5) 读取站点视觉变体，构建 JWT 密钥与全局状态
+    let theme = SiteTheme::new(db::site::get_variant(&pool).await?);
     let keys = Keys::new(&config.auth.jwt_secret)?;
     let state = AppState {
         config,
         keys,
         leptos_options: leptos_options.clone(),
         pool,
+        theme,
     };
 
     // 6) 装配 Leptos 路由与服务端上下文
@@ -48,14 +50,23 @@ async fn main() -> anyhow::Result<()> {
             routes,
             {
                 let state = state.clone();
-                move || provide_context(state.clone())
+                move || {
+                    provide_context(state.clone());
+                    provide_context(state.theme.get());
+                }
             },
             {
                 let leptos_options = leptos_options.clone();
                 move || app::shell(leptos_options.clone())
             },
         )
-        .fallback(leptos_axum::file_and_error_handler::<AppState, _>(app::shell))
+        .fallback(leptos_axum::file_and_error_handler_with_context::<AppState, _>(
+            {
+                let theme = state.theme.clone();
+                move || provide_context(theme.get())
+            },
+            app::shell,
+        ))
         .with_state(state.clone());
 
     // 7) 挂载中间件并启动监听
