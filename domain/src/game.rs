@@ -89,7 +89,7 @@ pub(crate) fn trim_optional(value: Option<String>) -> Option<String> {
 }
 
 /// 允许站外链接、邮件、站内路径与锚点
-fn is_safe_link(value: &str) -> bool {
+pub(crate) fn is_safe_link(value: &str) -> bool {
     let value = value.trim().to_ascii_lowercase();
 
     value.starts_with("http://")

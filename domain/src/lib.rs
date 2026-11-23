@@ -9,5 +9,5 @@ pub mod user;
 pub use error::DomainError;
 pub use game::{Game, GameDraft};
 pub use member::{Member, MemberDraft};
-pub use site::SiteVariant;
+pub use site::{HeroContent, HeroDraft, SiteVariant};
 pub use user::User;
