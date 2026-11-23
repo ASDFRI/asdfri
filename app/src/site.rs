@@ -43,6 +43,11 @@ impl SiteVariantSignal {
         self.0.get()
     }
 
+    /// 当前风格，不建立响应式依赖
+    pub fn get_untracked(self) -> SiteVariant {
+        self.0.get_untracked()
+    }
+
     /// 更新风格
     pub fn set(self, variant: SiteVariant) {
         self.0.set(variant);

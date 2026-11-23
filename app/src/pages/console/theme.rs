@@ -1,30 +1,37 @@
 use api::site::{SiteVariant, UpdateSiteVariant, get_site_variant};
 use leptos::prelude::*;
+use leptos::task::spawn_local;
 use leptos_meta::Title;
 use ui::{Button, ButtonVariant, Panel, SnackbarState, Spinner, Tag, ToastKind};
 
 use super::AuthSignal;
-use crate::site::SiteVariantSignal;
+use crate::site::{SiteVariantSignal, variant_label};
 
 /// 站点风格配置页
 #[component]
 pub fn ThemeAdmin() -> impl IntoView {
     let site_variant = SiteVariantSignal::use_state();
-    let current = Resource::new(|| (), |_| get_site_variant());
     let action = ServerAction::<UpdateSiteVariant>::new();
     let pending = Signal::derive(move || action.pending().get());
     let requested = RwSignal::new(None::<SiteVariant>);
     let is_authenticated = use_context::<AuthSignal>().unwrap_or_else(|| Signal::derive(|| false));
     let snackbar = SnackbarState::use_state();
 
-    // 1) 服务端读取结果同步到全局风格信号
-    Effect::new(move || {
-        if let Some(Ok(value)) = current.get() {
-            site_variant.set(value);
-        }
-    });
+    let sync_variant = move || {
+        spawn_local(async move {
+            if let Ok(value) = get_site_variant().await
+                && requested.get_untracked().is_none()
+                && site_variant.get_untracked() != value
+            {
+                site_variant.set(value);
+            }
+        });
+    };
 
-    // 2) 保存成功后立即应用，并回读数据库确认
+    // 1) 进入页面时读取数据库中的当前风格
+    Effect::new(move |_| sync_variant());
+
+    // 2) 保存成功后立即应用，避免回读旧值造成闪烁
     Effect::new(move || {
         if let Some(result) = action.value().get() {
             match result {
@@ -33,7 +40,6 @@ pub fn ThemeAdmin() -> impl IntoView {
                         site_variant.set(value);
                     }
                     snackbar.show("站点风格已更新，新请求将使用该风格。", ToastKind::Success);
-                    current.refetch();
                 }
                 Err(error) => snackbar.show(format!("风格更新失败：{error}"), ToastKind::Error),
             }
@@ -119,14 +125,6 @@ pub fn ThemeAdmin() -> impl IntoView {
                     .collect_view()
             }}
         </div>
-    }
-}
-
-/// 风格名称
-fn variant_label(variant: SiteVariant) -> &'static str {
-    match variant {
-        SiteVariant::Swiss => "瑞士国际主义",
-        SiteVariant::Constructivist => "纯构成主义",
     }
 }
 

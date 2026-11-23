@@ -2,15 +2,21 @@
 
 .console-shell {
   display: flex;
+  align-items: flex-start;
   min-height: 100vh;
   background: var(--paper);
 }
 
 .console-sidebar {
+  position: sticky;
+  top: 0;
   display: flex;
   flex-direction: column;
   width: 16rem;
+  height: 100vh;
+  height: 100dvh;
   flex: 0 0 16rem;
+  overflow-y: auto;
   background: var(--ink);
   color: var(--paper);
   border-right: 1px solid var(--ink);

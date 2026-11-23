@@ -125,11 +125,15 @@
 
   .console-shell {
     flex-direction: column;
+    align-items: stretch;
   }
 
   .console-sidebar {
+    position: static;
     width: 100%;
+    height: auto;
     flex-basis: auto;
+    overflow: visible;
   }
 
   .console-nav {
