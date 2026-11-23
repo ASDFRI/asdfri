@@ -569,6 +569,10 @@ html[data-variant="constructivist"] {
     z-index: 1;
   }
 
+  .site-footer__grid {
+    padding-block: clamp(2.5rem, 5vw, 4rem);
+  }
+
   .footer-manifesto {
     display: flex;
     flex-wrap: wrap;
