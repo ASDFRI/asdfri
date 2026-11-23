@@ -1,7 +1,7 @@
 use api::{
     game::{Game, get_games},
     member::{Member, get_members},
-    site::SiteVariant,
+    site::{HeroContent, get_hero},
 };
 use leptos::prelude::*;
 use leptos_meta::{Meta, Title};
@@ -35,61 +35,129 @@ pub fn HomePage() -> impl IntoView {
 #[component]
 fn HomeHero() -> impl IntoView {
     let variant = SiteVariantSignal::use_state();
+    let hero = Resource::new(move || variant.get(), get_hero);
+
+    view! {
+        <Suspense fallback=move || {
+            view! { <HeroMarkup content=HeroContent::defaults(variant.get())/> }
+        }>
+            {move || {
+                hero.get()
+                    .map(|result| match result {
+                        Ok(content) => view! { <HeroMarkup content=content/> }.into_any(),
+                        Err(_) => {
+                            view! { <HeroMarkup content=HeroContent::defaults(variant.get())/> }
+                                .into_any()
+                        }
+                    })
+            }}
+        </Suspense>
+    }
+}
+
+/// 首屏内容
+#[component]
+fn HeroMarkup(content: HeroContent) -> impl IntoView {
+    let HeroContent {
+        eyebrow,
+        location,
+        title,
+        lede,
+        primary_label,
+        primary_href,
+        secondary_label,
+        secondary_href,
+        media_tag,
+        media_poster,
+        media_video,
+        strip,
+    } = content;
+    let has_media = !media_video.is_empty();
+
+    let location_view = (!location.is_empty())
+        .then(|| view! { <span class="eyebrow">{location}</span> }.into_any());
+    let title_view = title
+        .into_iter()
+        .enumerate()
+        .map(|(index, line)| match index {
+            0 => view! { {line} }.into_any(),
+            1 => view! { <br/><span class="display__accent">{line}</span> }.into_any(),
+            _ => view! { <br/>{line} }.into_any(),
+        })
+        .collect_view();
+    let lede_view = (!lede.is_empty()).then(|| view! { <p class="lede">{lede}</p> }.into_any());
+
+    let primary_view = (!primary_label.is_empty() && !primary_href.is_empty()).then(|| {
+        view! { <a href=primary_href class="btn btn--solid">{primary_label}</a> }.into_any()
+    });
+    let secondary_view = (!secondary_label.is_empty() && !secondary_href.is_empty()).then(|| {
+        view! { <a href=secondary_href class="btn btn--outline">{secondary_label}</a> }.into_any()
+    });
+    let actions_view = (primary_view.is_some() || secondary_view.is_some()).then(|| {
+        view! {
+            <div class="home-hero__actions">
+                {primary_view}
+                {secondary_view}
+            </div>
+        }
+        .into_any()
+    });
+
+    let media_view = has_media.then(|| {
+        let poster = media_poster;
+        let tag = (!media_tag.is_empty())
+            .then(|| view! { <span class="home-hero__media-tag mono">{media_tag}</span> });
+        view! {
+            <div class="home-hero__media">
+                <video
+                    autoplay=true
+                    loop=true
+                    muted=true
+                    playsinline=true
+                    poster=poster
+                    aria-hidden="true"
+                >
+                    <source src=media_video type="video/mp4"/>
+                </video>
+                {tag}
+            </div>
+        }
+        .into_any()
+    });
+
+    let strip_view = (!strip.is_empty()).then(|| {
+        view! {
+            <div class="home-hero__strip" aria-hidden="true">
+                {strip.into_iter().map(|label| view! { <span>{label}</span> }).collect_view()}
+            </div>
+        }
+        .into_any()
+    });
 
     view! {
         <section class="home-hero">
-            <div class="shell home-hero__grid">
+            <div
+                class=if has_media {
+                    "shell home-hero__grid"
+                } else {
+                    "shell home-hero__grid home-hero__grid--no-media"
+                }
+            >
                 <div class="home-hero__meta">
-                    <span class="eyebrow">"ASDF Studio / 2026"</span>
-                    <span class="eyebrow">"31°N 114°E · Wuhan"</span>
+                    <span class="eyebrow">{eyebrow}</span>
+                    {location_view}
                 </div>
 
                 <div class="home-hero__title">
                     <span class="index-mark">"01"</span>
-                    <h1 class="display">
-                        "我们创造"
-                        <br/>
-                        <span class="display__accent">"虚拟"</span>
-                        <br/>
-                        "世界"
-                    </h1>
-                    <p class="lede">
-                        {move || match variant.get() {
-                            SiteVariant::Swiss => {
-                                "一个由梦想家、工程师与艺术家组成的工作室。以结构主义的几何秩序与瑞士国际主义的网格理性，重新组织互动娱乐的表达。"
-                            }
-                            SiteVariant::Constructivist => {
-                                "一个由梦想家、工程师与艺术家组成的工作室。以构成主义的几何秩序、斜切色块与生产力，重新组织互动娱乐的表达。"
-                            }
-                        }}
-                    </p>
-                    <div class="home-hero__actions">
-                        <a href="#games" class="btn btn--solid">"查看作品"</a>
-                        <a href="#contact" class="btn btn--outline">"发起合作"</a>
-                    </div>
+                    <h1 class="display">{title_view}</h1>
+                    {lede_view}
+                    {actions_view}
                 </div>
 
-                <div class="home-hero__media">
-                    <video
-                        autoplay=true
-                        loop=true
-                        muted=true
-                        playsinline=true
-                        poster="/ASDF.png"
-                        aria-hidden="true"
-                    >
-                        <source src="/ASDF.mp4" type="video/mp4"/>
-                    </video>
-                    <span class="home-hero__media-tag mono">"// REEL 2026"</span>
-                </div>
+                {media_view}
 
-                <div class="home-hero__strip" aria-hidden="true">
-                    <span>"UE5"</span>
-                    <span>"RUST"</span>
-                    <span>"LEPTOS"</span>
-                    <span>"AXUM"</span>
-                    <span>"BEVY"</span>
-                </div>
+                {strip_view}
             </div>
         </section>
     }

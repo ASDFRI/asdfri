@@ -21,8 +21,8 @@ pub fn Field(
     #[prop(optional)]
     required: bool,
     /// 是否禁用
-    #[prop(optional)]
-    disabled: bool,
+    #[prop(optional, into)]
+    disabled: Signal<bool>,
     /// 占位提示
     #[prop(into, optional)]
     placeholder: Option<String>,
@@ -66,8 +66,8 @@ pub fn Textarea(
     #[prop(optional)]
     required: bool,
     /// 是否禁用
-    #[prop(optional)]
-    disabled: bool,
+    #[prop(optional, into)]
+    disabled: Signal<bool>,
     /// 可见行数
     #[prop(default = 4)]
     rows: usize,

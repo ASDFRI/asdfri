@@ -11,6 +11,14 @@ pub fn theme_color(variant: SiteVariant) -> &'static str {
     }
 }
 
+/// 视觉变体的中文名称
+pub fn variant_label(variant: SiteVariant) -> &'static str {
+    match variant {
+        SiteVariant::Swiss => "瑞士国际主义",
+        SiteVariant::Constructivist => "纯构成主义",
+    }
+}
+
 /// 站点风格信号
 #[derive(Clone, Copy)]
 pub struct SiteVariantSignal(RwSignal<SiteVariant>);

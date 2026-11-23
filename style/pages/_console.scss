@@ -300,52 +300,28 @@
   color: #bdb7ac;
 }
 
-.slot-list {
+.hero-editor .admin-panel__text {
+  flex: 0 0 auto;
+}
+
+.hero-toolbar {
   display: flex;
-  flex-direction: column;
-  border-top: 1px solid var(--line);
-  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
 }
 
-.slot {
-  display: grid;
-  grid-template-columns: 8rem 1fr 14rem;
-  gap: 1.2rem;
-  align-items: baseline;
-  padding-block: 1rem;
-  border-bottom: 1px solid var(--line-soft);
-}
-
-.slot__key {
-  color: var(--red);
-  font-size: 0.6rem;
-  font-weight: 700;
-}
-
-.slot__content {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.slot__label {
-  font-family: var(--font-mono);
+.hero-toolbar__label {
+  color: var(--muted);
   font-size: 0.55rem;
   letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--muted);
 }
 
-.slot__value {
-  font-size: 1rem;
-  font-weight: 600;
-}
-
-.slot__rule {
-  color: var(--muted);
+.hero-toolbar__dirty {
+  color: var(--red);
   font-size: 0.55rem;
-  text-transform: none;
-  letter-spacing: 0.04em;
+  font-weight: 700;
 }
 
 .admin-list {

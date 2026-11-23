@@ -1483,18 +1483,6 @@ html[data-variant="constructivist"] {
     color: var(--muted);
   }
 
-  .slot {
-    border-bottom: 2px solid var(--ink);
-  }
-
-  .slot__key {
-    padding: 0.2rem 0.35rem;
-    background: var(--ink);
-    color: var(--paper);
-    font-weight: 800;
-    text-align: center;
-  }
-
   .empty-state {
     border: 3px dashed var(--ink);
     background: var(--paper);

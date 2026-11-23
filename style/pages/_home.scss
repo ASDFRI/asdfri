@@ -16,6 +16,13 @@
   gap: clamp(1.5rem, 4vw, 3.5rem);
 }
 
+.home-hero__grid--no-media {
+  grid-template-areas:
+    "meta meta"
+    "title title"
+    "strip strip";
+}
+
 .home-hero__meta {
   grid-area: meta;
   display: flex;

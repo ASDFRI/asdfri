@@ -70,14 +70,6 @@
     width: 13rem;
     flex-basis: 13rem;
   }
-
-  .slot {
-    grid-template-columns: 6rem 1fr;
-  }
-
-  .slot__rule {
-    grid-column: 2;
-  }
 }
 
 @media (max-width: 860px) {
@@ -193,6 +185,10 @@
 
   .upload__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .form-pair {
+    grid-template-columns: 1fr;
   }
 
   .admin-row {
