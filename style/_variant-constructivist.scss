@@ -245,12 +245,12 @@ html[data-variant="constructivist"] {
     box-shadow: 5px 5px 0 var(--red);
   }
 
-  .btn--ghost {
+  .btn.btn--ghost {
     border-color: transparent;
     box-shadow: none;
   }
 
-  .btn--ghost:hover:not(:disabled) {
+  .btn.btn--ghost:hover:not(:disabled) {
     background: transparent;
     color: var(--red);
     transform: none;
@@ -1453,7 +1453,7 @@ html[data-variant="constructivist"] {
     border: 0;
   }
 
-  .admin-panel {
+  .admin-panel:not(.panel--dark) {
     background: var(--paper);
   }
 
@@ -1670,7 +1670,7 @@ html[data-variant="constructivist"] {
     background: var(--red-deep);
   }
 
-  .btn--ghost:hover:not(:disabled),
+  .btn.btn--ghost:hover:not(:disabled),
   .arrow-link:hover,
   .dossier .arrow-link:hover,
   .person__role,
@@ -1687,5 +1687,33 @@ html[data-variant="constructivist"] {
   .dossier .arrow-link:hover,
   .screening__frame:hover .screening__play {
     border-color: var(--red-deep);
+  }
+
+  .btn.btn--ghost {
+    background: transparent;
+    color: var(--ink);
+    border-color: transparent;
+    box-shadow: none;
+  }
+
+  .panel--dark .btn.btn--ghost,
+  .section--ink .btn.btn--ghost {
+    color: var(--paper);
+  }
+
+  .btn.btn--ghost:hover:not(:disabled) {
+    background: transparent;
+    color: var(--red-deep);
+    border-color: transparent;
+    box-shadow: none;
+    transform: none;
+  }
+
+  .panel--dark .btn.btn--ghost:hover:not(:disabled),
+  .section--ink .btn.btn--ghost:hover:not(:disabled) {
+    background: transparent;
+    color: var(--paper);
+    border-color: transparent;
+    box-shadow: none;
   }
 }
