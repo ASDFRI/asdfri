@@ -189,14 +189,15 @@
 }
 
 @media (max-width: 640px) {
-  // 窄屏堆叠后的首屏内容天然高于视口，放弃定高、回归内容流并保留媒体最小高度。
+  // 手机端沿用定高首屏：媒体行吸收剩余高度，标签条改为单行横滚以压缩固定内容。
   .home-hero {
-    min-height: 0;
-    padding-block: clamp(2rem, 6vw, 3rem) clamp(2.5rem, 7vw, 4rem);
+    padding-block: clamp(0.75rem, 2vh, 1.5rem);
   }
 
-  .home-hero__media {
-    min-height: 20rem;
+  @supports (height: 100svh) {
+    .home-hero {
+      padding-block: clamp(0.75rem, 2svh, 1.5rem);
+    }
   }
 
   .home-hero__meta {
@@ -204,8 +205,19 @@
     gap: 0.35rem;
   }
 
+  .home-hero__strip {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  .home-hero__strip::-webkit-scrollbar {
+    display: none;
+  }
+
   .home-hero__strip span {
-    flex: 1 1 40%;
+    flex: 1 0 auto;
   }
 
   .people-grid,
