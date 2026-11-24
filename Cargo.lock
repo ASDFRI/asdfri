@@ -2743,6 +2743,7 @@ dependencies = [
  "leptos",
  "leptos_axum",
  "tokio",
+ "tower",
  "tower-http 0.7.1",
  "tracing",
 ]

@@ -29,3 +29,7 @@ tracing.workspace = true
 
 # Error
 anyhow.workspace = true
+
+[dev-dependencies]
+# HTTP 基础设施（中间件测试的 oneshot 探测）
+tower.workspace = true

@@ -29,6 +29,7 @@ axum-extra = { version = "0.12.6", features = ["cookie", "typed-header"] }
 axum-server = { version = "0.9.2", features = ["tls-openssl"] }
 
 # HTTP 基础设施
+tower = { version = "0.5.3", features = ["util"] }
 tower-http = { version = "0.7.1", features = ["fs", "limit", "set-header"] }
 
 # 数据库
