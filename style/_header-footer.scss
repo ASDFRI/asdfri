@@ -6,7 +6,7 @@
   z-index: 60;
   background: rgba(243, 240, 233, 0.92);
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--line);
+  border-bottom: var(--site-header-border) solid var(--line);
 }
 
 .site-header__inner {
@@ -14,7 +14,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 2rem;
-  min-height: 4.6rem;
+  height: var(--site-header-h);
 }
 
 .brand {

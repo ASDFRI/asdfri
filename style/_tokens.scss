@@ -16,4 +16,8 @@
   --gutter: clamp(1.25rem, 4vw, 4rem);
   --max: 1440px;
   --ease: cubic-bezier(0.2, 0, 0, 1);
+  // 首屏高度基准：页头尺寸在此声明，首屏偏移量由同一组变量推导。
+  --site-header-h: 4.6rem;
+  --site-header-border: 1px;
+  --first-screen-offset: calc(var(--site-header-h) + var(--site-header-border));
 }

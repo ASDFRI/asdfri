@@ -73,6 +73,15 @@ fn HeroMarkup(content: HeroContent) -> impl IntoView {
         strip,
     } = content;
     let has_media = !media_video.is_empty();
+    let has_strip = !strip.is_empty();
+    let grid_class = match (has_media, has_strip) {
+        (true, true) => "shell home-hero__grid",
+        (true, false) => "shell home-hero__grid home-hero__grid--no-strip",
+        (false, true) => "shell home-hero__grid home-hero__grid--no-media",
+        (false, false) => {
+            "shell home-hero__grid home-hero__grid--no-media home-hero__grid--no-strip"
+        }
+    };
 
     let location_view = (!location.is_empty())
         .then(|| view! { <span class="eyebrow">{location}</span> }.into_any());
@@ -125,7 +134,7 @@ fn HeroMarkup(content: HeroContent) -> impl IntoView {
         .into_any()
     });
 
-    let strip_view = (!strip.is_empty()).then(|| {
+    let strip_view = has_strip.then(|| {
         view! {
             <div class="home-hero__strip" aria-hidden="true">
                 {strip.into_iter().map(|label| view! { <span>{label}</span> }).collect_view()}
@@ -136,13 +145,7 @@ fn HeroMarkup(content: HeroContent) -> impl IntoView {
 
     view! {
         <section class="home-hero">
-            <div
-                class=if has_media {
-                    "shell home-hero__grid"
-                } else {
-                    "shell home-hero__grid home-hero__grid--no-media"
-                }
-            >
+            <div class=grid_class>
                 <div class="home-hero__meta">
                     <span class="eyebrow">{eyebrow}</span>
                     {location_view}

@@ -1,19 +1,32 @@
 // 首页。
 
 .home-hero {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - var(--first-screen-offset));
+  padding-block: clamp(1.25rem, 3vh, 2.5rem) clamp(1rem, 2.5vh, 2rem);
   border-bottom: 1px solid var(--line);
-  padding-block: clamp(2rem, 5vw, 4.5rem) clamp(3rem, 7vw, 6rem);
   overflow: hidden;
 }
 
 .home-hero__grid {
+  flex: 1 1 auto;
+  min-height: 0;
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
   grid-template-areas:
     "meta meta"
     "title media"
     "strip strip";
-  gap: clamp(1.5rem, 4vw, 3.5rem);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: clamp(1rem, 4vw, 3.5rem);
+}
+
+.home-hero__grid--no-strip {
+  grid-template-areas:
+    "meta meta"
+    "title media";
+  grid-template-rows: auto minmax(0, 1fr);
 }
 
 .home-hero__grid--no-media {
@@ -21,6 +34,13 @@
     "meta meta"
     "title title"
     "strip strip";
+}
+
+.home-hero__grid--no-media.home-hero__grid--no-strip {
+  grid-template-areas:
+    "meta meta"
+    "title title";
+  grid-template-rows: auto minmax(0, 1fr);
 }
 
 .home-hero__meta {
@@ -39,6 +59,10 @@
   gap: 1.4rem;
 }
 
+.home-hero__title .display {
+  font-size: clamp(3.2rem, min(9vw, 11vh), 9.5rem);
+}
+
 .home-hero__actions {
   display: flex;
   flex-wrap: wrap;
@@ -50,7 +74,7 @@
   grid-area: media;
   position: relative;
   align-self: stretch;
-  min-height: clamp(18rem, 38vw, 34rem);
+  min-height: 0;
   border: 1px solid var(--line);
   background: var(--ink);
   overflow: hidden;
@@ -107,6 +131,26 @@
 
 .home-hero__strip span:last-child {
   border-right: 0;
+}
+
+// svh 排除移动端浏览器工具栏所占高度，保证首屏不被工具栏顶出视口。
+@supports (height: 100svh) {
+  .home-hero {
+    min-height: calc(100svh - var(--first-screen-offset));
+    padding-block: clamp(1.25rem, 3svh, 2.5rem) clamp(1rem, 2.5svh, 2rem);
+  }
+
+  .home-hero__grid {
+    gap: clamp(1rem, min(4vw, 4svh), 3.5rem);
+  }
+
+  .home-hero__title {
+    gap: clamp(0.9rem, 1.8svh, 1.4rem);
+  }
+
+  .home-hero__title .display {
+    font-size: clamp(3.2rem, min(9vw, 11svh), 9.5rem);
+  }
 }
 
 .intro-grid {

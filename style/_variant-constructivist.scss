@@ -20,6 +20,12 @@ html[data-variant="constructivist"] {
   --font-display: "Arial Black", "Helvetica Neue", "Noto Sans SC", "Microsoft YaHei", sans-serif;
   --gutter: clamp(1rem, 3.5vw, 3rem);
   --max: 1480px;
+  --site-header-h: 4.8rem;
+  --site-header-border: 4px;
+  --agitation-h: 2.6rem;
+  --first-screen-offset: calc(
+    var(--site-header-h) + var(--site-header-border) + var(--agitation-h)
+  );
 
   body {
     overflow-x: hidden;
@@ -407,12 +413,8 @@ html[data-variant="constructivist"] {
 
   .site-header {
     background: var(--ink);
-    border-bottom: 4px solid var(--red);
+    border-bottom: var(--site-header-border) solid var(--red);
     backdrop-filter: none;
-  }
-
-  .site-header__inner {
-    min-height: 4.8rem;
   }
 
   .brand__mark {
@@ -493,6 +495,7 @@ html[data-variant="constructivist"] {
 
   .agitation-strip {
     position: relative;
+    height: var(--agitation-h);
     overflow: hidden;
     background: var(--red);
     color: var(--paper);
@@ -516,18 +519,20 @@ html[data-variant="constructivist"] {
     z-index: 1;
     display: flex;
     width: max-content;
+    height: 100%;
     animation: agitation 24s linear infinite;
   }
 
   .agitation-strip__group {
     display: flex;
     align-items: stretch;
+    height: 100%;
   }
 
   .agitation-strip__group span {
     display: flex;
     align-items: center;
-    padding: 0.55rem 1.4rem;
+    padding-inline: 1.4rem;
     border-right: 2px solid var(--ink);
     font-family: var(--font-mono);
     font-size: 0.65rem;
@@ -635,7 +640,6 @@ html[data-variant="constructivist"] {
     position: relative;
     overflow: hidden;
     border-bottom: 4px solid var(--ink);
-    padding-block: clamp(2rem, 4vw, 3.5rem) clamp(3rem, 6vw, 5rem);
   }
 
   .home-hero::before {
@@ -1600,7 +1604,7 @@ html[data-variant="constructivist"] {
     }
 
     .agitation-strip__group span {
-      padding: 0.45rem 0.9rem;
+      padding-inline: 0.9rem;
       font-size: 0.56rem;
     }
 

@@ -5,17 +5,43 @@
     grid-template-columns: 1fr 1fr;
   }
 
-  .home-hero__grid {
+  .home-hero__grid,
+  .home-hero__grid--no-strip,
+  .home-hero__grid--no-media,
+  .home-hero__grid--no-media.home-hero__grid--no-strip {
     grid-template-columns: 1fr;
+  }
+
+  .home-hero__grid {
     grid-template-areas:
       "meta"
       "title"
       "media"
       "strip";
+    grid-template-rows: auto auto minmax(0, 1fr) auto;
   }
 
-  .home-hero__media {
-    min-height: 20rem;
+  .home-hero__grid--no-strip {
+    grid-template-areas:
+      "meta"
+      "title"
+      "media";
+    grid-template-rows: auto auto minmax(0, 1fr);
+  }
+
+  .home-hero__grid--no-media {
+    grid-template-areas:
+      "meta"
+      "title"
+      "strip";
+    grid-template-rows: auto minmax(0, 1fr) auto;
+  }
+
+  .home-hero__grid--no-media.home-hero__grid--no-strip {
+    grid-template-areas:
+      "meta"
+      "title";
+    grid-template-rows: auto minmax(0, 1fr);
   }
 
   .people-grid {
@@ -163,6 +189,16 @@
 }
 
 @media (max-width: 640px) {
+  // 窄屏堆叠后的首屏内容天然高于视口，放弃定高、回归内容流并保留媒体最小高度。
+  .home-hero {
+    min-height: 0;
+    padding-block: clamp(2rem, 6vw, 3rem) clamp(2.5rem, 7vw, 4rem);
+  }
+
+  .home-hero__media {
+    min-height: 20rem;
+  }
+
   .home-hero__meta {
     flex-direction: column;
     gap: 0.35rem;
