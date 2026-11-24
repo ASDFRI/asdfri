@@ -96,11 +96,16 @@ time = { version = "0.3.55", features = [
 uuid = { version = "1.29.3", features = ["v4"] }
 
 [profile.release]
+# 服务端不设 panic = "abort"：保留栈展开，运行期 panic 仅终止单个连接而非整个进程
 codegen-units = 1
 lto = "fat"
 opt-level = "z"
-panic = "abort"
 strip = "symbols"
+
+# wasm 前端专用：继承服务端体积优化，恢复 abort 裁剪栈展开开销
+[profile.wasm-release]
+inherits = "release"
+panic = "abort"
 
 # 全部参数说明见 https://github.com/leptos-rs/cargo-leptos
 # 一个 Leptos 项目由工作区中共同使用的前端库与服务端二进制组成
@@ -167,3 +172,7 @@ lib-features = []
 #
 # 可选。默认 false
 lib-default-features = false
+
+# lib 目标 release 构建使用的 Cargo profile
+# 服务端 release 保留栈展开以隔离 panic，wasm 目标沿用 abort 压缩产物体积
+lib-profile-release = "wasm-release"
