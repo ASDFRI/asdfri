@@ -144,7 +144,7 @@ fn HeroMarkup(content: HeroContent) -> impl IntoView {
     });
 
     view! {
-        <section class="home-hero">
+        <section class="home-hero first-screen">
             <div class=grid_class>
                 <div class="home-hero__meta">
                     <span class="eyebrow">{eyebrow}</span>

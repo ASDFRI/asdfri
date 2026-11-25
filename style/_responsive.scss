@@ -189,17 +189,18 @@
 }
 
 @media (max-width: 640px) {
-  // 手机端沿用定高首屏：媒体行吸收剩余高度，标签条改为单行横滚以压缩固定内容。
-  .home-hero {
+  // 手机端统一收敛首屏内边距，为内容让出高度。
+  .first-screen {
     padding-block: clamp(0.75rem, 2vh, 1.5rem);
   }
 
   @supports (height: 100svh) {
-    .home-hero {
+    .first-screen {
       padding-block: clamp(0.75rem, 2svh, 1.5rem);
     }
   }
 
+  // 首页：标签条改为单行横滚，压缩固定内容高度。
   .home-hero__meta {
     flex-direction: column;
     gap: 0.35rem;

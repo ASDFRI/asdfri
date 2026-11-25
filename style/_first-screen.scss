@@ -1,0 +1,32 @@
+// 首屏基元：把区块精确对齐到视口剩余高度。
+
+.first-screen {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - var(--first-screen-offset, 0px));
+  padding-block: clamp(1.25rem, 3vh, 2.5rem) clamp(1rem, 2.5vh, 2rem);
+  overflow: hidden;
+}
+
+// 内容容器吃掉剩余高度，由各页内部构图决定如何分配。
+.first-screen > .shell {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+// 首屏标题按视口高度收敛，避免矮视口下顶破首屏。
+.first-screen .display {
+  font-size: clamp(3.2rem, min(9vw, 11vh), 9.5rem);
+}
+
+// svh 排除移动端浏览器工具栏高度，保证首屏不被工具栏顶出视口。
+@supports (height: 100svh) {
+  .first-screen {
+    min-height: calc(100svh - var(--first-screen-offset, 0px));
+    padding-block: clamp(1.25rem, 3svh, 2.5rem) clamp(1rem, 2.5svh, 2rem);
+  }
+
+  .first-screen .display {
+    font-size: clamp(3.2rem, min(9vw, 11svh), 9.5rem);
+  }
+}

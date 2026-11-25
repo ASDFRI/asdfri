@@ -23,9 +23,12 @@ html[data-variant="constructivist"] {
   --site-header-h: 4.8rem;
   --site-header-border: 4px;
   --agitation-h: 2.6rem;
-  --first-screen-offset: calc(
-    var(--site-header-h) + var(--site-header-border) + var(--agitation-h)
-  );
+
+  #main {
+    --first-screen-offset: calc(
+      var(--site-header-h) + var(--site-header-border) + var(--agitation-h)
+    );
+  }
 
   body {
     overflow-x: hidden;

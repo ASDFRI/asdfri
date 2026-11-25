@@ -1,5 +1,10 @@
 // 站点页头、导航与页脚。
 
+// 首屏偏移量只在站点内容根内成立；无 chrome 的页面（404、控制台）回退 0。
+#main {
+  --first-screen-offset: calc(var(--site-header-h) + var(--site-header-border));
+}
+
 .site-header {
   position: sticky;
   top: 0;
