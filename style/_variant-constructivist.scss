@@ -1278,6 +1278,20 @@ html[data-variant="constructivist"] {
     background: var(--red);
   }
 
+  .singularis-hero__module {
+    border-top: 2px solid var(--ink);
+  }
+
+  .singularis-hero__module-index {
+    padding: 0.2rem 0.4rem;
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .singularis-hero__tail {
+    border-top: 3px solid var(--ink);
+  }
+
   .arch-grid {
     gap: 2px;
     background: var(--ink);

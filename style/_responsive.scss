@@ -97,6 +97,11 @@
     padding-top: 1.2rem;
   }
 
+  .singularis-hero__head {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
   .stat-grid--console {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -315,6 +320,23 @@
   .games-hero__slat-subtitle {
     writing-mode: horizontal-tb;
     padding: 0.5rem 0.6rem;
+  }
+
+  // Singularis：阶梯缩进归零，行高收敛。
+  .singularis-hero__grid {
+    --singularis-step: 0px;
+  }
+
+  .singularis-hero__head {
+    padding-bottom: 1rem;
+  }
+
+  .singularis-hero__module {
+    min-height: 1.9rem;
+  }
+
+  .singularis-hero__tail {
+    min-height: 2.6rem;
   }
 
   .people-grid,

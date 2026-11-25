@@ -2,7 +2,7 @@ use leptos::prelude::*;
 use leptos_meta::{Meta, Title};
 use ui::Tag;
 
-use crate::components::SectionHead;
+use crate::components::{ArrowLink, SectionHead};
 
 /// 架构特性
 struct ArchSpec {
@@ -117,6 +117,20 @@ const TOOLCHAIN: [(&str, &str); 3] = [
     ),
 ];
 
+/// 首屏模块索引：框架公开模块名，按原始登记顺序排列
+const MODULE_NAMES: [&str; 10] = [
+    "SingularisCore",
+    "SingularisInteraction",
+    "SingularisVehicle",
+    "SingularisBasium",
+    "SingularisOnline",
+    "SingularisBuild",
+    "SingularisInventory",
+    "SingularisMessage",
+    "SingularisWidget",
+    "SingularisLua",
+];
+
 /// Singularis 页
 #[component]
 pub fn SingularisPage() -> impl IntoView {
@@ -127,36 +141,43 @@ pub fn SingularisPage() -> impl IntoView {
             content="Singularis：面向虚幻引擎 5 的模块化游戏框架，包含 15 个以上生产可用的插件与工具。"
         />
         <section class="page-hero first-screen">
-            <div class="shell page-hero__grid">
-                <span class="index-mark">"05"</span>
-                <div class="page-hero__text">
-                    <span class="eyebrow">"Unreal Engine 5 Ecosystem"</span>
-                    <h1 class="display">"引力奇点"</h1>
-                    <p class="lede">
-                        "面向下一代交互体验的终极模块化框架。包含 15 个以上可直接用于生产环境的插件与工具的统一架构。"
-                    </p>
-                    <div class="page-hero__actions">
-                        <a href="#architecture" class="btn btn--solid">"探索框架"</a>
-                        <a href="#manifesto" class="btn btn--outline">"阅读宣言"</a>
+            <div class="shell singularis-hero__grid">
+                <div class="singularis-hero__head">
+                    <div class="singularis-hero__title">
+                        <span class="index-mark">"05"</span>
+                        <span class="eyebrow">"Unreal Engine 5 Ecosystem"</span>
+                        <h1 class="display">"引力奇点"</h1>
+                    </div>
+                    <div class="singularis-hero__aside">
+                        <p class="lede">
+                            "面向下一代交互体验的终极模块化框架。包含 15 个以上可直接用于生产环境的插件与工具的统一架构。"
+                        </p>
+                        <div class="singularis-hero__actions">
+                            <a href="#architecture" class="btn btn--solid">"探索框架"</a>
+                            <a href="#manifesto" class="btn btn--outline">"阅读宣言"</a>
+                        </div>
                     </div>
                 </div>
-                <div class="hero-matrix">
-                    {[
-                        "SingularisCore",
-                        "SingularisInteraction",
-                        "SingularisVehicle",
-                        "SingularisBasium",
-                        "SingularisOnline",
-                        "SingularisBuild",
-                        "SingularisInventory",
-                        "SingularisMessage",
-                        "SingularisWidget",
-                        "SingularisLua",
-                    ]
-                        .into_iter()
-                        .map(|name| view! { <span class="hero-matrix__item mono">{name}</span> })
+
+                <ol class="singularis-hero__ladder">
+                    {MODULE_NAMES
+                        .iter()
+                        .enumerate()
+                        .map(|(index, name)| {
+                            view! {
+                                <li class="singularis-hero__module" style=format!("--i: {}", index)>
+                                    <span class="singularis-hero__module-index mono">
+                                        {format!("SG-{:02}", index + 1)}
+                                    </span>
+                                    <span class="singularis-hero__module-name mono">{*name}</span>
+                                </li>
+                            }
+                        })
                         .collect_view()}
-                </div>
+                    <li class="singularis-hero__tail" style="--i: 10">
+                        <ArrowLink href="#modules">"完整军械库"</ArrowLink>
+                    </li>
+                </ol>
             </div>
         </section>
 
