@@ -1411,6 +1411,16 @@ html[data-variant="constructivist"] {
     letter-spacing: -0.04em;
   }
 
+  .not-found__sectors {
+    border-top: 3px solid var(--ink);
+  }
+
+  .not-found__sector-index {
+    padding: 0.2rem 0.4rem;
+    background: var(--red);
+    color: var(--paper);
+  }
+
   .console-shell {
     background: var(--paper);
   }
@@ -1762,6 +1772,7 @@ html[data-variant="constructivist"] {
   .games-hero__slat:hover .games-hero__slat-subtitle,
   .games-hero__slat:hover .games-hero__slat-status,
   .trailer-hero__tick-time,
+  .not-found__sector-index,
   .home-hero__media-tag,
   .news-card__kind,
   .case__status,

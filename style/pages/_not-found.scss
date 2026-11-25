@@ -1,15 +1,55 @@
 // 404 页。
 
+// 居中构图：巨型错误码 + 说明列 + 可用分区导航行。
 .not-found__grid {
   display: grid;
-  grid-template-columns: 12rem minmax(0, 1fr);
-  gap: clamp(1.5rem, 4vw, 4rem);
+  grid-template-columns: minmax(0, 0.55fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vh, 3rem) clamp(2rem, 6vw, 6rem);
   align-items: center;
 }
 
-.not-found__code {
-  font-size: clamp(2.5rem, 6vw, 5rem);
-  font-weight: 700;
-  letter-spacing: -0.04em;
+// 巨型错误码覆盖首屏 display 字级收敛，按视口放到最大。
+.first-screen .not-found__glyph {
+  font-size: clamp(4.5rem, min(26vw, 30vh), 26rem);
+  line-height: 0.85;
+}
+
+@supports (height: 100svh) {
+  .first-screen .not-found__glyph {
+    font-size: clamp(4.5rem, min(26vw, 30svh), 26rem);
+  }
+}
+
+.not-found__body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.not-found__sectors {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(1.2rem, 4vw, 3rem);
+  margin: 0;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--line);
+  color: var(--ink-soft);
+  font-size: 0.66rem;
+}
+
+.not-found__sector {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  transition: color 0.18s var(--ease);
+}
+
+.not-found__sector-index {
+  color: var(--red);
+  font-size: 0.56rem;
+}
+
+.not-found__sector:hover {
   color: var(--red);
 }
