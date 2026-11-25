@@ -120,7 +120,7 @@ pub fn Dashboard() -> impl IntoView {
                 <span class="eyebrow">"Visual System"</span>
                 <h2 class="admin-panel__title">"站点风格"</h2>
                 <p class="admin-panel__text">
-                    "在瑞士国际主义与纯构成主义之间切换；设置持久化到数据库并作用于下一次渲染。"
+                    "在瑞士国际主义、纯构成主义与史诗叙事之间切换；设置持久化到数据库并作用于下一次渲染。"
                 </p>
                 <a href="/console/theme" class="btn btn--solid">"进入风格配置"</a>
             </Panel>

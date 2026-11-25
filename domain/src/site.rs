@@ -15,17 +15,21 @@ pub enum SiteVariant {
     /// 纯构成主义：斜切几何、硬阴影与三色限制
     #[serde(rename = "constructivist")]
     Constructivist,
+    /// 史诗叙事：电影画幅、鎏金细节与深空光影
+    #[serde(rename = "epic")]
+    Epic,
 }
 
 impl SiteVariant {
     /// 全部可选变体
-    pub const ALL: [Self; 2] = [Self::Swiss, Self::Constructivist];
+    pub const ALL: [Self; 3] = [Self::Swiss, Self::Constructivist, Self::Epic];
 
     /// 数据库与页面标记使用的稳定标识
     pub fn as_str(self) -> &'static str {
         match self {
             Self::Swiss => "swiss",
             Self::Constructivist => "constructivist",
+            Self::Epic => "epic",
         }
     }
 
@@ -34,6 +38,7 @@ impl SiteVariant {
         match value.trim().to_ascii_lowercase().as_str() {
             "swiss" => Some(Self::Swiss),
             "constructivist" => Some(Self::Constructivist),
+            "epic" => Some(Self::Epic),
             _ => None,
         }
     }
@@ -83,6 +88,9 @@ impl HeroContent {
                 }
                 SiteVariant::Constructivist => {
                     "一个由梦想家、工程师与艺术家组成的工作室。以构成主义的几何秩序、斜切色块与生产力，重新组织互动娱乐的表达。"
+                }
+                SiteVariant::Epic => {
+                    "一个由梦想家、工程师与艺术家组成的工作室。以电影化的光影、鎏金细节与长篇叙事的耐心，重新组织互动娱乐的表达。"
                 }
             }
             .to_string(),
@@ -296,12 +304,17 @@ mod tests {
 
     #[test]
     fn defaults_differ_only_in_lede() {
-        let swiss = HeroContent::defaults(SiteVariant::Swiss);
-        let constructivist = HeroContent::defaults(SiteVariant::Constructivist);
+        for (index, left) in SiteVariant::ALL.into_iter().enumerate() {
+            for right in SiteVariant::ALL.into_iter().skip(index + 1) {
+                let left = HeroContent::defaults(left);
+                let right = HeroContent::defaults(right);
 
-        assert_ne!(swiss.lede, constructivist.lede);
-        assert_eq!(swiss.title, constructivist.title);
-        assert_eq!(swiss.primary_href, constructivist.primary_href);
+                assert_ne!(left.lede, right.lede);
+                assert_eq!(left.title, right.title);
+                assert_eq!(left.primary_href, right.primary_href);
+                assert_eq!(left.media_video, right.media_video);
+            }
+        }
     }
 
     #[test]

@@ -3,11 +3,20 @@
 use api::site::SiteVariant;
 use leptos::prelude::*;
 
+/// 浏览器原生控件与滚动条的配色方案
+pub fn color_scheme(variant: SiteVariant) -> &'static str {
+    match variant {
+        SiteVariant::Swiss | SiteVariant::Constructivist => "light",
+        SiteVariant::Epic => "dark",
+    }
+}
+
 /// 浏览器地址栏主题色
 pub fn theme_color(variant: SiteVariant) -> &'static str {
     match variant {
         SiteVariant::Swiss => "#f3f0e9",
         SiteVariant::Constructivist => "#0b0b0b",
+        SiteVariant::Epic => "#0a0a0e",
     }
 }
 
@@ -16,6 +25,7 @@ pub fn variant_label(variant: SiteVariant) -> &'static str {
     match variant {
         SiteVariant::Swiss => "瑞士国际主义",
         SiteVariant::Constructivist => "纯构成主义",
+        SiteVariant::Epic => "史诗叙事",
     }
 }
 

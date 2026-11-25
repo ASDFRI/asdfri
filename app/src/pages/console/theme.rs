@@ -78,7 +78,7 @@ pub fn ThemeAdmin() -> impl IntoView {
             </div>
         </Show>
 
-        <div class="admin-grid admin-grid--pair">
+        <div class="admin-grid">
             {move || {
                 let active = site_variant.get();
                 SiteVariant::ALL
@@ -137,6 +137,9 @@ fn variant_description(variant: SiteVariant) -> &'static str {
         SiteVariant::Constructivist => {
             "不对称网格、斜切色块、粗描边与硬阴影；米白、炭黑与信号红组织宣传海报式版面。"
         }
+        SiteVariant::Epic => {
+            "深空黑、鎏金与衬线大标题；电影化光影、章节式留白与仪式感细节承载远征叙事。"
+        }
     }
 }
 
@@ -145,5 +148,6 @@ fn variant_tags(variant: SiteVariant) -> [&'static str; 3] {
     match variant {
         SiteVariant::Swiss => ["GRID", "WHITE SPACE", "SWISS"],
         SiteVariant::Constructivist => ["SKEW", "HARD SHADOW", "THICK BORDER"],
+        SiteVariant::Epic => ["CINEMATIC", "GOLD LEAF", "SERIF"],
     }
 }

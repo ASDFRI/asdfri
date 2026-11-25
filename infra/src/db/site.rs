@@ -172,11 +172,10 @@ mod tests {
     async fn persists_variant() {
         let pool = pool().await;
 
-        set_variant(&pool, SiteVariant::Constructivist).await.unwrap();
-        assert_eq!(get_variant(&pool).await.unwrap(), SiteVariant::Constructivist);
-
-        set_variant(&pool, SiteVariant::Swiss).await.unwrap();
-        assert_eq!(get_variant(&pool).await.unwrap(), SiteVariant::Swiss);
+        for variant in SiteVariant::ALL {
+            set_variant(&pool, variant).await.unwrap();
+            assert_eq!(get_variant(&pool).await.unwrap(), variant);
+        }
     }
 
     #[tokio::test]
@@ -195,31 +194,29 @@ mod tests {
     async fn hero_falls_back_to_variant_defaults() {
         let pool = pool().await;
 
-        assert_eq!(
-            get_hero(&pool, SiteVariant::Swiss).await.unwrap(),
-            HeroContent::defaults(SiteVariant::Swiss)
-        );
-        assert_eq!(
-            get_hero(&pool, SiteVariant::Constructivist).await.unwrap(),
-            HeroContent::defaults(SiteVariant::Constructivist)
-        );
+        for variant in SiteVariant::ALL {
+            assert_eq!(get_hero(&pool, variant).await.unwrap(), HeroContent::defaults(variant));
+        }
     }
 
     #[tokio::test]
     async fn persists_hero_content_per_variant() {
         let pool = pool().await;
-        let mut expected = HeroContent::defaults(SiteVariant::Swiss);
-        expected.eyebrow = "TEST / 2027".to_string();
-        expected.title = vec!["一".to_string(), "二".to_string(), "三".to_string()];
-        expected.strip = vec!["A".to_string(), "B".to_string()];
+        let mut expected = Vec::new();
 
-        set_hero(&pool, SiteVariant::Swiss, &HeroDraft::from(expected.clone())).await.unwrap();
+        for (index, variant) in SiteVariant::ALL.into_iter().enumerate() {
+            let mut content = HeroContent::defaults(variant);
+            content.eyebrow = format!("TEST / {}", variant.as_str());
+            content.title = vec![format!("LINE {index}")];
+            content.strip = vec![format!("TAG {index}")];
 
-        assert_eq!(get_hero(&pool, SiteVariant::Swiss).await.unwrap(), expected);
-        assert_eq!(
-            get_hero(&pool, SiteVariant::Constructivist).await.unwrap(),
-            HeroContent::defaults(SiteVariant::Constructivist)
-        );
+            set_hero(&pool, variant, &HeroDraft::from(content.clone())).await.unwrap();
+            expected.push((variant, content));
+        }
+
+        for (variant, content) in expected {
+            assert_eq!(get_hero(&pool, variant).await.unwrap(), content);
+        }
     }
 
     #[tokio::test]

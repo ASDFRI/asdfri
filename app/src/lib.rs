@@ -19,7 +19,7 @@ use crate::{
         Console, Dashboard, GameAdmin, GamesPage, HeroConfig, HomePage, MemberAdmin, NotFound,
         SingularisPage, TechnologyPage, ThemeAdmin, TrailerPage,
     },
-    site::{SiteVariantSignal, theme_color},
+    site::{SiteVariantSignal, color_scheme, theme_color},
 };
 
 /// HTML 文档骨架，由服务端在 SSR 时渲染
@@ -32,7 +32,6 @@ pub fn shell(options: LeptosOptions) -> impl IntoView {
             <head>
                 <meta charset="utf-8"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-                <meta name="color-scheme" content="light"/>
                 <link rel="icon" href="/favicon.ico"/>
                 <AutoReload options=options.clone()/>
                 <HydrationScripts options/>
@@ -56,6 +55,7 @@ pub fn App() -> impl IntoView {
 
     view! {
         <Stylesheet id="leptos" href="/pkg/asdfri.css"/>
+        <Meta name="color-scheme" content=move || color_scheme(variant.get())/>
         <Meta name="theme-color" content=move || theme_color(variant.get())/>
 
         <Router>

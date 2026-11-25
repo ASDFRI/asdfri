@@ -45,6 +45,36 @@ fn AgitationStrip() -> impl IntoView {
     }
 }
 
+/// 史诗叙事序章条文本
+const OVERTURE: [&str; 5] =
+    ["第一章", "EPIC NARRATIVE", "神话 · 远征 · 黎明", "THE SAGA BEGINS", "ASDF / 2026"];
+
+/// 史诗叙事序章条内容组
+#[component]
+fn OvertureGroup() -> impl IntoView {
+    view! {
+        <div class="epic-overture__group">
+            {OVERTURE
+                .into_iter()
+                .map(|text| view! { <span>{text}</span> })
+                .collect_view()}
+        </div>
+    }
+}
+
+/// 史诗叙事序章条
+#[component]
+fn EpicOverture() -> impl IntoView {
+    view! {
+        <div class="epic-overture" aria-hidden="true">
+            <div class="epic-overture__track">
+                <OvertureGroup/>
+                <OvertureGroup/>
+            </div>
+        </div>
+    }
+}
+
 /// 公开站点布局：页头、风格化宣传条、路由出口与页脚
 #[component]
 pub fn SiteLayout() -> impl IntoView {
@@ -55,6 +85,7 @@ pub fn SiteLayout() -> impl IntoView {
         {move || {
             (variant.get() == SiteVariant::Constructivist).then(|| view! { <AgitationStrip/> })
         }}
+        {move || (variant.get() == SiteVariant::Epic).then(|| view! { <EpicOverture/> })}
         <main id="main"><Outlet/></main>
         <SiteFooter/>
     }
@@ -173,6 +204,23 @@ pub fn SiteFooter() -> impl IntoView {
                     })
             }}
 
+            {move || {
+                (variant.get() == SiteVariant::Epic)
+                    .then(|| {
+                        view! {
+                            <div class="shell footer-epic">
+                                <div class="footer-epic__text">
+                                    <span class="mono footer-epic__index">"// THE SAGA"</span>
+                                    <p>"每一个世界，都始于一次不甘平凡的启程。"</p>
+                                </div>
+                                <span class="mono footer-epic__en">
+                                    "EVERY WORLD BEGINS WITH A DEPARTURE."
+                                </span>
+                            </div>
+                        }
+                    })
+            }}
+
             <div class="shell site-footer__grid">
                 <div class="site-footer__brand">
                     <span class="eyebrow">"ASDF Studio"</span>
@@ -183,6 +231,9 @@ pub fn SiteFooter() -> impl IntoView {
                             }
                             SiteVariant::Constructivist => {
                                 "红、黑、米白。用几何、色块与生产力组织世界，而不是装饰世界。"
+                            }
+                            SiteVariant::Epic => {
+                                "深空黑、鎏金与长夜。把每一次交互写成可以传颂的远征叙事。"
                             }
                         }}
                     </p>

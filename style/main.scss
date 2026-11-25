@@ -1,5 +1,5 @@
 // ASDF Studio
-// 双视觉体系：默认瑞士国际主义，data-variant="constructivist" 切换纯构成主义。
+// 三视觉体系：默认瑞士国际主义，data-variant 切换纯构成主义与史诗叙事。
 
 @use "tokens";
 @use "base";
@@ -19,3 +19,4 @@
 @use "pages/not-found";
 @use "responsive";
 @use "variant-constructivist";
+@use "variant-epic";

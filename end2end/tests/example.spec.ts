@@ -1,4 +1,57 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
+
+const variants = {
+  swiss: {
+    label: "瑞士国际主义",
+    themeColor: "#f3f0e9",
+    background: "rgb(243, 240, 233)",
+    colorScheme: "light",
+  },
+  constructivist: {
+    label: "纯构成主义",
+    themeColor: "#0b0b0b",
+    background: "rgb(239, 230, 212)",
+    colorScheme: "light",
+  },
+  epic: {
+    label: "史诗叙事",
+    themeColor: "#0a0a0e",
+    background: "rgb(10, 10, 14)",
+    colorScheme: "dark",
+  },
+} as const;
+
+type Variant = keyof typeof variants;
+
+const variantOrder = Object.keys(variants) as Variant[];
+
+const isVariant = (value: string | null): value is Variant =>
+  value !== null && Object.hasOwn(variants, value);
+
+const expectVariantChrome = async (page: Page, variant: Variant) => {
+  const constructivist = variant === "constructivist";
+  const epic = variant === "epic";
+  const agitation = page.locator(".agitation-strip");
+  const manifesto = page.locator(".footer-manifesto");
+  const overture = page.locator(".epic-overture");
+  const saga = page.locator(".footer-epic");
+
+  if (constructivist) {
+    await expect(agitation).toBeVisible();
+    await expect(manifesto).toBeVisible();
+  } else {
+    await expect(agitation).toHaveCount(0);
+    await expect(manifesto).toHaveCount(0);
+  }
+
+  if (epic) {
+    await expect(overture).toBeVisible();
+    await expect(saga).toBeVisible();
+  } else {
+    await expect(overture).toHaveCount(0);
+    await expect(saga).toHaveCount(0);
+  }
+};
 
 test("首页渲染并展示内容", async ({ page }) => {
   await page.goto("/");
@@ -13,25 +66,25 @@ test("首页渲染并展示内容", async ({ page }) => {
 test("页面风格标记与条件内容一致", async ({ page }) => {
   await page.goto("/");
 
-  const variant = await page.locator("html").getAttribute("data-variant");
-  expect(["swiss", "constructivist"]).toContain(variant as string);
+  const rawVariant = await page.locator("html").getAttribute("data-variant");
+  expect(isVariant(rawVariant)).toBe(true);
+  const variant: Variant = isVariant(rawVariant) ? rawVariant : "swiss";
+  const meta = variants[variant];
 
   await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute(
     "content",
-    variant === "constructivist" ? "#0b0b0b" : "#f3f0e9",
+    meta.themeColor,
+  );
+  await expect(page.locator('meta[name="color-scheme"]')).toHaveAttribute(
+    "content",
+    meta.colorScheme,
   );
 
   await expect
     .poll(() => page.evaluate(() => window.getComputedStyle(document.body).backgroundColor))
-    .toBe(variant === "constructivist" ? "rgb(239, 230, 212)" : "rgb(243, 240, 233)");
+    .toBe(meta.background);
 
-  if (variant === "constructivist") {
-    await expect(page.locator(".agitation-strip")).toBeVisible();
-    await expect(page.locator(".footer-manifesto")).toBeVisible();
-  } else {
-    await expect(page.locator(".agitation-strip")).toHaveCount(0);
-    await expect(page.locator(".footer-manifesto")).toHaveCount(0);
-  }
+  await expectVariantChrome(page, variant);
 });
 
 test("作品页与 Singularis 页可访问", async ({ page }) => {
@@ -91,10 +144,11 @@ test.describe("站点风格切换", () => {
     await login.getByRole("button", { name: "登录" }).click();
     await expect(page.getByText("已认证")).toBeVisible();
 
-    const initial = (await page.locator("html").getAttribute("data-variant")) ?? "swiss";
-    const target = initial === "constructivist" ? "swiss" : "constructivist";
-    const initialLabel = initial === "constructivist" ? "纯构成主义" : "瑞士国际主义";
-    const targetLabel = target === "constructivist" ? "纯构成主义" : "瑞士国际主义";
+    const rawInitial = await page.locator("html").getAttribute("data-variant");
+    const initial: Variant = isVariant(rawInitial) ? rawInitial : "swiss";
+    const target = variantOrder[(variantOrder.indexOf(initial) + 1) % variantOrder.length];
+    const initialLabel = variants[initial].label;
+    const targetLabel = variants[target].label;
     const targetCard = page.locator(".theme-option", { hasText: targetLabel });
 
     try {
@@ -104,22 +158,20 @@ test.describe("站点风格切换", () => {
       await expect(page.locator("html")).toHaveAttribute("data-variant", target);
       await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute(
         "content",
-        target === "constructivist" ? "#0b0b0b" : "#f3f0e9",
+        variants[target].themeColor,
+      );
+      await expect(page.locator('meta[name="color-scheme"]')).toHaveAttribute(
+        "content",
+        variants[target].colorScheme,
       );
       await expect
         .poll(() => page.evaluate(() => window.getComputedStyle(document.body).backgroundColor))
-        .toBe(target === "constructivist" ? "rgb(239, 230, 212)" : "rgb(243, 240, 233)");
+        .toBe(variants[target].background);
       await expect(targetCard.getByText("当前风格")).toBeVisible();
 
       await page.locator(".console-brand").click();
       await expect(page).toHaveURL(/\/$/);
-      if (target === "constructivist") {
-        await expect(page.locator(".agitation-strip")).toBeVisible();
-        await expect(page.locator(".footer-manifesto")).toBeVisible();
-      } else {
-        await expect(page.locator(".agitation-strip")).toHaveCount(0);
-        await expect(page.locator(".footer-manifesto")).toHaveCount(0);
-      }
+      await expectVariantChrome(page, target);
 
       await page.goto("/console/theme");
       await page.waitForSelector('html[data-hydrated="true"]');
@@ -129,13 +181,7 @@ test.describe("站点风格切换", () => {
       await expect(page.locator("html")).toHaveAttribute("data-variant", target);
 
       await page.goto("/");
-      if (target === "constructivist") {
-        await expect(page.locator(".agitation-strip")).toBeVisible();
-        await expect(page.locator(".footer-manifesto")).toBeVisible();
-      } else {
-        await expect(page.locator(".agitation-strip")).toHaveCount(0);
-        await expect(page.locator(".footer-manifesto")).toHaveCount(0);
-      }
+      await expectVariantChrome(page, target);
     } finally {
       await page.goto("/console/theme");
       await page.waitForSelector('html[data-hydrated="true"]');
@@ -150,12 +196,17 @@ test.describe("站点风格切换", () => {
         await expect(page.locator("html")).toHaveAttribute("data-variant", initial);
         await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute(
           "content",
-          initial === "constructivist" ? "#0b0b0b" : "#f3f0e9",
+          variants[initial].themeColor,
+        );
+        await expect(page.locator('meta[name="color-scheme"]')).toHaveAttribute(
+          "content",
+          variants[initial].colorScheme,
         );
       }
 
       await page.goto("/");
       await expect(page.locator("html")).toHaveAttribute("data-variant", initial);
+      await expectVariantChrome(page, initial);
     }
   });
 });

@@ -54,6 +54,20 @@ fn notes_for(variant: SiteVariant) -> HeroNotes {
                 tags: ["PAPER", "INK", "SIGNAL RED"],
             },
         },
+        SiteVariant::Epic => HeroNotes {
+            geometry: PanelCopy {
+                eyebrow: "Composition",
+                title: "章节构图",
+                text: "以电影画幅、超大衬线标题与仪式化留白组织页面；鎏金细线划分章节，光晕聚焦视线。",
+                tags: ["CINEMA", "SERIF", "GOLD RULE"],
+            },
+            contrast: PanelCopy {
+                eyebrow: "Contrast",
+                title: "深渊与鎏金",
+                text: "深空黑承载主体，鎏金只用于标题、编号与主操作；图像统一为暖调低饱和，避免彩色噪声。",
+                tags: ["MIDNIGHT", "GOLD LEAF", "WARM GRADE"],
+            },
+        },
     }
 }
 
@@ -264,7 +278,7 @@ pub fn HeroConfig() -> impl IntoView {
         <Show when=move || !is_authenticated.get()>
             <div class="lock-panel">
                 <span class="mono">"READ ONLY"</span>
-                <p>"当前会话未认证：可以浏览两种变体的首屏配置，但保存会被服务端拒绝。"</p>
+                <p>"当前会话未认证：可以浏览全部变体的首屏配置，但保存会被服务端拒绝。"</p>
             </div>
         </Show>
 
