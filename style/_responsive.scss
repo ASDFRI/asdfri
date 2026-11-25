@@ -70,15 +70,6 @@
     grid-column: span 2;
   }
 
-  .page-hero__grid {
-    grid-template-columns: 3rem minmax(0, 1fr);
-    grid-template-rows: auto minmax(0, 1fr);
-  }
-
-  .page-hero__grid .hero-matrix {
-    grid-column: 2;
-  }
-
   .tech-hero__grid {
     grid-template-columns: 1fr;
     grid-template-rows: auto minmax(0, 1fr);
@@ -243,22 +234,6 @@
 
   .home-hero__strip span {
     flex: 1 0 auto;
-  }
-
-  // 页面首屏的标签云在手机上改为单行横滚，避免堆叠顶破视口。
-  .hero-matrix {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    scrollbar-width: none;
-  }
-
-  .hero-matrix::-webkit-scrollbar {
-    display: none;
-  }
-
-  .hero-matrix__item {
-    flex: 0 0 auto;
   }
 
   // 技术账本行高收敛，保证最小视口内仍可整屏容纳。

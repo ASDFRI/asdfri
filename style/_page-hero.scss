@@ -1,4 +1,4 @@
-// 通用页面首屏、箭头链接与提示条。
+// 内容页首屏外壳、箭头链接与提示条。
 
 .page-hero {
   border-bottom: 1px solid var(--line);
@@ -8,54 +8,6 @@
 .page-hero > .shell {
   position: relative;
   z-index: 1;
-}
-
-.page-hero__grid {
-  display: grid;
-  grid-template-columns: 4rem minmax(0, 1.3fr) minmax(16rem, 0.8fr);
-  grid-template-rows: minmax(0, 1fr);
-  gap: clamp(1.5rem, 4vw, 4rem);
-  align-items: start;
-}
-
-.page-hero__text {
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-}
-
-.page-hero__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.7rem;
-  margin-top: 0.5rem;
-}
-
-.hero-matrix {
-  display: flex;
-  flex-wrap: wrap;
-  align-content: flex-start;
-  align-self: end;
-  gap: 0.5rem;
-  padding-top: 0.4rem;
-}
-
-.hero-matrix__item {
-  padding: 0.45rem 0.65rem;
-  border: 1px solid var(--line-soft);
-  color: var(--ink-soft);
-  font-size: 0.6rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: none;
-  transition: background 0.18s var(--ease), color 0.18s var(--ease),
-    border-color 0.18s var(--ease);
-}
-
-.hero-matrix__item:hover {
-  background: var(--ink);
-  border-color: var(--ink);
-  color: var(--paper);
 }
 
 .arrow-link {

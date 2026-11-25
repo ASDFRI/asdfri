@@ -938,26 +938,6 @@ html[data-variant="constructivist"] {
     pointer-events: none;
   }
 
-  .page-hero__grid {
-    position: relative;
-    z-index: 1;
-  }
-
-  .hero-matrix__item {
-    border: 2px solid var(--ink);
-    background: var(--paper);
-    color: var(--ink);
-    box-shadow: 4px 4px 0 var(--ink);
-    font-weight: 700;
-  }
-
-  .hero-matrix__item:hover {
-    background: var(--red);
-    color: var(--paper);
-    border-color: var(--ink);
-    box-shadow: 4px 4px 0 var(--ink);
-  }
-
   .tech-hero__ledger {
     border-left: 3px solid var(--ink);
   }
@@ -1767,7 +1747,6 @@ html[data-variant="constructivist"] {
   .nav-link[aria-current="page"],
   .nav-mobile__link:hover,
   .nav-mobile__link[aria-current="page"],
-  .hero-matrix__item:hover,
   .games-hero__slat:hover .games-hero__slat-index,
   .games-hero__slat:hover .games-hero__slat-subtitle,
   .games-hero__slat:hover .games-hero__slat-status,
