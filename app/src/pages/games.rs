@@ -2,7 +2,7 @@ use leptos::prelude::*;
 use leptos_meta::{Meta, Title};
 use ui::Tag;
 
-use crate::components::SectionHead;
+use crate::components::{ArrowLink, SectionHead};
 
 /// 作品案例档案
 struct CaseFile {
@@ -89,9 +89,9 @@ pub fn GamesPage() -> impl IntoView {
             content="ASDF Studio 的作品档案：蜂巢盛宴、逃离酒店、回家的路、月之暗面、温馨与钢铁集体。"
         />
         <section class="page-hero first-screen">
-            <div class="shell page-hero__grid">
-                <span class="index-mark">"04"</span>
-                <div class="page-hero__text">
+            <div class="shell games-hero__grid">
+                <div class="games-hero__lead">
+                    <span class="index-mark">"04"</span>
                     <span class="eyebrow">"Case Files"</span>
                     <h1 class="display">
                         "六个"
@@ -101,15 +101,23 @@ pub fn GamesPage() -> impl IntoView {
                     <p class="lede">
                         "每份档案对应一个正在成形的系统。我们不展示承诺，只展示当前可被检验的结构。"
                     </p>
+                    <ArrowLink href="#archive">"作品档案"</ArrowLink>
                 </div>
-                <div class="hero-matrix">
+
+                <div class="games-hero__band">
                     {CASES
                         .iter()
                         .map(|case| {
                             view! {
-                                <span class="hero-matrix__item mono">
-                                    {format!("{} / {}", case.index, case.subtitle)}
-                                </span>
+                                <a
+                                    class=format!("games-hero__slat games-hero__slat--{}", case.tone)
+                                    href=format!("#case-{}", case.index)
+                                >
+                                    <img src=case.image alt=case.title decoding="async"/>
+                                    <span class="games-hero__slat-index mono">{case.index}</span>
+                                    <span class="games-hero__slat-subtitle mono">{case.subtitle}</span>
+                                    <span class="games-hero__slat-status mono">{case.status}</span>
+                                </a>
                             }
                         })
                         .collect_view()}
@@ -117,7 +125,7 @@ pub fn GamesPage() -> impl IntoView {
             </div>
         </section>
 
-        <section class="section">
+        <section id="archive" class="section">
             <div class="shell">
                 <SectionHead
                     index="04.1"
@@ -132,11 +140,14 @@ pub fn GamesPage() -> impl IntoView {
                         .map(|(index, case)| {
                             let reverse = index % 2 == 1;
                             view! {
-                                <article class=format!(
-                                    "case case--{} {}",
-                                    case.tone,
-                                    if reverse { "case--reverse" } else { "" },
-                                )>
+                                <article
+                                    id=format!("case-{}", case.index)
+                                    class=format!(
+                                        "case case--{} {}",
+                                        case.tone,
+                                        if reverse { "case--reverse" } else { "" },
+                                    )
+                                >
                                     <div class="case__media">
                                         <img src=case.image alt=case.title loading="lazy" decoding="async"/>
                                         <span class="case__status mono">{case.status}</span>

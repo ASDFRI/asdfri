@@ -281,6 +281,42 @@
     display: none;
   }
 
+  // 作品横架改为单行横滚，沿袭首屏在手机端的横滚处理。
+  .games-hero__grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+
+  .games-hero__lead {
+    justify-content: flex-start;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+    padding-right: 0;
+    padding-bottom: 1.2rem;
+  }
+
+  .games-hero__band {
+    display: flex;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  .games-hero__band::-webkit-scrollbar {
+    display: none;
+  }
+
+  .games-hero__slat {
+    flex: 0 0 8.5rem;
+    border-left: 0;
+    border-right: 1px solid var(--line-soft);
+  }
+
+  .games-hero__slat-subtitle {
+    writing-mode: horizontal-tb;
+    padding: 0.5rem 0.6rem;
+  }
+
   .people-grid,
   .tool-grid,
   .module-grid,

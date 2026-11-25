@@ -1241,6 +1241,43 @@ html[data-variant="constructivist"] {
     font-weight: 800;
   }
 
+  .games-hero__lead {
+    border-right: 3px solid var(--ink);
+  }
+
+  .games-hero__slat {
+    border-left: 3px solid var(--ink);
+  }
+
+  .games-hero__slat:first-child {
+    border-left: 0;
+  }
+
+  .games-hero__slat::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(135deg, rgba(216, 27, 24, 0.28), transparent 55%);
+    mix-blend-mode: multiply;
+    pointer-events: none;
+  }
+
+  .games-hero__slat-index {
+    border: 2px solid var(--ink);
+    background: var(--red);
+  }
+
+  .games-hero__slat-subtitle {
+    border: 2px solid var(--ink);
+    background: var(--red);
+  }
+
+  .games-hero__slat-status {
+    border-top: 2px solid var(--ink);
+    background: var(--red);
+  }
+
   .arch-grid {
     gap: 2px;
     background: var(--ink);
@@ -1665,6 +1702,15 @@ html[data-variant="constructivist"] {
     .stat-grid--console {
       gap: 0.8rem;
     }
+
+    .games-hero__lead {
+      border-right: 0;
+      border-bottom: 3px solid var(--ink);
+    }
+
+    .games-hero__slat {
+      border-right: 0;
+    }
   }
 
   // 小字号对比度修正：红底使用深红，黑底使用纸白
@@ -1698,6 +1744,9 @@ html[data-variant="constructivist"] {
   .nav-mobile__link:hover,
   .nav-mobile__link[aria-current="page"],
   .hero-matrix__item:hover,
+  .games-hero__slat:hover .games-hero__slat-index,
+  .games-hero__slat:hover .games-hero__slat-subtitle,
+  .games-hero__slat:hover .games-hero__slat-status,
   .trailer-hero__tick-time,
   .home-hero__media-tag,
   .news-card__kind,
