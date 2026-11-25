@@ -7,7 +7,7 @@ pub fn NotFound() -> impl IntoView {
     view! {
         <Title text="404 — ASDF Studio"/>
         <Meta name="robots" content="noindex"/>
-        <section class="not-found">
+        <section class="not-found first-screen first-screen--center">
             <div class="shell not-found__grid">
                 <span class="not-found__code mono">"404"</span>
                 <div>

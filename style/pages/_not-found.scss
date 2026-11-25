@@ -1,14 +1,10 @@
 // 404 页。
 
-.not-found {
-  padding-block: clamp(5rem, 12vw, 12rem);
-}
-
 .not-found__grid {
   display: grid;
   grid-template-columns: 12rem minmax(0, 1fr);
   gap: clamp(1.5rem, 4vw, 4rem);
-  align-items: start;
+  align-items: center;
 }
 
 .not-found__code {

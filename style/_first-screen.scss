@@ -19,6 +19,12 @@
   font-size: clamp(3.2rem, min(9vw, 11vh), 9.5rem);
 }
 
+// 居中构图：内容容器保持内容高度并整体垂直居中（如 404）。
+.first-screen--center > .shell {
+  flex: 0 1 auto;
+  margin-block: auto;
+}
+
 // svh 排除移动端浏览器工具栏高度，保证首屏不被工具栏顶出视口。
 @supports (height: 100svh) {
   .first-screen {
