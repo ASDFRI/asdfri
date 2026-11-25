@@ -641,7 +641,6 @@ html[data-variant="constructivist"] {
 
   .home-hero {
     position: relative;
-    overflow: hidden;
     border-bottom: 4px solid var(--ink);
   }
 
@@ -924,8 +923,6 @@ html[data-variant="constructivist"] {
 
   .page-hero {
     position: relative;
-    overflow: hidden;
-    border-bottom: 4px solid var(--ink);
   }
 
   .page-hero::before {
