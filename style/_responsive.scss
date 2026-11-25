@@ -85,6 +85,18 @@
     gap: clamp(1.5rem, 4vw, 3rem);
   }
 
+  .trailer-hero__stage {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+
+  .trailer-hero__rail {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+    padding-left: 0;
+    padding-top: 1.2rem;
+  }
+
   .stat-grid--console {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -247,6 +259,26 @@
   // 技术账本行高收敛，保证最小视口内仍可整屏容纳。
   .tech-hero__row {
     min-height: 2.1rem;
+  }
+
+  // 预告片：规格折为双列，时间轴折为四格标尺。
+  .trailer-hero__rail .meta-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .trailer-hero__timeline {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    min-height: 0;
+  }
+
+  .trailer-hero__tick {
+    position: static;
+  }
+
+  .trailer-hero__end {
+    display: none;
   }
 
   .people-grid,
