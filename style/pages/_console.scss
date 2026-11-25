@@ -4,6 +4,7 @@
   display: flex;
   align-items: flex-start;
   min-height: 100vh;
+  min-height: 100svh;
   background: var(--paper);
 }
 
@@ -14,7 +15,7 @@
   flex-direction: column;
   width: 16rem;
   height: 100vh;
-  height: 100dvh;
+  height: 100dvh; // 随可视视口伸缩，避免工具栏收放时侧栏底部露出底色
   flex: 0 0 16rem;
   overflow-y: auto;
   background: var(--ink);
@@ -177,6 +178,7 @@
   place-items: center;
   width: 100%;
   min-height: 100vh;
+  min-height: 100svh;
   color: var(--muted);
 }
 
