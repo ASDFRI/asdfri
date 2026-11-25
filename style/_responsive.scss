@@ -79,6 +79,12 @@
     grid-column: 2;
   }
 
+  .tech-hero__grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: clamp(1.5rem, 4vw, 3rem);
+  }
+
   .stat-grid--console {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -236,6 +242,11 @@
 
   .hero-matrix__item {
     flex: 0 0 auto;
+  }
+
+  // 技术账本行高收敛，保证最小视口内仍可整屏容纳。
+  .tech-hero__row {
+    min-height: 2.1rem;
   }
 
   .people-grid,

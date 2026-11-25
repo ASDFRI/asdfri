@@ -2,7 +2,7 @@ use leptos::prelude::*;
 use leptos_meta::{Meta, Title};
 use ui::Tag;
 
-use crate::components::SectionHead;
+use crate::components::{ArrowLink, SectionHead};
 
 /// 引擎规格
 struct EngineSpec {
@@ -198,14 +198,65 @@ pub fn TechnologyPage() -> impl IntoView {
     }
 }
 
-/// 技术首屏
+/// 技术栈索引行
+struct StackEntry {
+    index: &'static str,
+    name: &'static str,
+    category: &'static str,
+}
+
+/// 技术栈索引：按职能登记的工作室全套工具
+const STACK: [StackEntry; 8] = [
+    StackEntry {
+        index: "01",
+        name: "Unreal Engine 5",
+        category: "RENDERING",
+    },
+    StackEntry {
+        index: "02",
+        name: "Godot",
+        category: "OPEN SOURCE",
+    },
+    StackEntry {
+        index: "03",
+        name: "Bevy",
+        category: "ECS / RUST",
+    },
+    StackEntry {
+        index: "04",
+        name: "Blender",
+        category: "PROCEDURAL",
+    },
+    StackEntry {
+        index: "05",
+        name: "C++ & Rust",
+        category: "SYSTEMS",
+    },
+    StackEntry {
+        index: "06",
+        name: "Leptos",
+        category: "ISOMORPHIC UI",
+    },
+    StackEntry {
+        index: "07",
+        name: "Axum",
+        category: "HTTP SERVICE",
+    },
+    StackEntry {
+        index: "08",
+        name: "SQLite",
+        category: "STORAGE",
+    },
+];
+
+/// 技术首屏：左叙事列配右侧全高技术栈账本
 #[component]
 fn TechnologyHero() -> impl IntoView {
     view! {
-        <section id="tech-hero" class="page-hero first-screen">
-            <div class="shell page-hero__grid">
-                <span class="index-mark">"02"</span>
-                <div class="page-hero__text">
+        <section class="page-hero first-screen">
+            <div class="shell tech-hero__grid">
+                <div class="tech-hero__lead">
+                    <span class="index-mark">"02"</span>
                     <span class="eyebrow">"The Forge"</span>
                     <h1 class="display">
                         "引擎"
@@ -215,21 +266,27 @@ fn TechnologyHero() -> impl IntoView {
                     <p class="lede">
                         "我们不被单一工具束缚。从照片级 AAA 世界到数据驱动的 ECS 模拟，我们驾驭合适的技术，锻造无与伦比的交互体验。"
                     </p>
+                    <ArrowLink href="#core-engines">"引擎档案"</ArrowLink>
                 </div>
-                <div class="hero-matrix">
-                    {[
-                        "Unreal Engine 5",
-                        "Godot",
-                        "Bevy",
-                        "Blender",
-                        "C++ & Rust",
-                        "Leptos",
-                        "Axum",
-                    ]
-                        .into_iter()
-                        .map(|name| view! { <span class="hero-matrix__item mono">{name}</span> })
+
+                <aside class="tech-hero__ledger">
+                    <div class="tech-hero__ledger-head mono">
+                        <span>"STACK INDEX"</span>
+                        <span>{format!("{:02} ENTRIES", STACK.len())}</span>
+                    </div>
+                    {STACK
+                        .iter()
+                        .map(|entry| {
+                            view! {
+                                <div class="tech-hero__row">
+                                    <span class="tech-hero__row-index mono">{entry.index}</span>
+                                    <span class="tech-hero__row-name">{entry.name}</span>
+                                    <span class="tech-hero__row-category mono">{entry.category}</span>
+                                </div>
+                            }
+                        })
                         .collect_view()}
-                </div>
+                </aside>
             </div>
         </section>
     }

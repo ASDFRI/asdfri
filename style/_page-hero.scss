@@ -4,6 +4,12 @@
   border-bottom: 1px solid var(--line);
 }
 
+// 首屏内容容器压在构成主义色带之上。
+.page-hero > .shell {
+  position: relative;
+  z-index: 1;
+}
+
 .page-hero__grid {
   display: grid;
   grid-template-columns: 4rem minmax(0, 1.3fr) minmax(16rem, 0.8fr);
