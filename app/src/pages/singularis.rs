@@ -126,7 +126,7 @@ pub fn SingularisPage() -> impl IntoView {
             name="description"
             content="Singularis：面向虚幻引擎 5 的模块化游戏框架，包含 15 个以上生产可用的插件与工具。"
         />
-        <section class="page-hero">
+        <section class="page-hero first-screen">
             <div class="shell page-hero__grid">
                 <span class="index-mark">"05"</span>
                 <div class="page-hero__text">

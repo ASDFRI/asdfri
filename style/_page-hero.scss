@@ -1,17 +1,13 @@
 // 通用页面首屏、箭头链接与提示条。
 
 .page-hero {
-  padding-block: clamp(3.5rem, 8vw, 8rem);
   border-bottom: 1px solid var(--line);
-}
-
-.page-hero--compact {
-  padding-block: clamp(2.5rem, 5vw, 5rem);
 }
 
 .page-hero__grid {
   display: grid;
   grid-template-columns: 4rem minmax(0, 1.3fr) minmax(16rem, 0.8fr);
+  grid-template-rows: minmax(0, 1fr);
   gap: clamp(1.5rem, 4vw, 4rem);
   align-items: start;
 }
@@ -33,6 +29,7 @@
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
+  align-self: end;
   gap: 0.5rem;
   padding-top: 0.4rem;
 }

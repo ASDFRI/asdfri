@@ -72,6 +72,7 @@
 
   .page-hero__grid {
     grid-template-columns: 3rem minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
   }
 
   .page-hero__grid .hero-matrix {
@@ -219,6 +220,22 @@
 
   .home-hero__strip span {
     flex: 1 0 auto;
+  }
+
+  // 页面首屏的标签云在手机上改为单行横滚，避免堆叠顶破视口。
+  .hero-matrix {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  .hero-matrix::-webkit-scrollbar {
+    display: none;
+  }
+
+  .hero-matrix__item {
+    flex: 0 0 auto;
   }
 
   .people-grid,

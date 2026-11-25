@@ -25,7 +25,7 @@ pub fn TrailerPage() -> impl IntoView {
             name="description"
             content="ASDF Studio 2026 年度预告片，于 Bilibili 观看。"
         />
-        <section class="page-hero page-hero--compact">
+        <section class="page-hero first-screen">
             <div class="shell page-hero__grid">
                 <span class="index-mark">"03"</span>
                 <div class="page-hero__text">

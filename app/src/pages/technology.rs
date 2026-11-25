@@ -202,7 +202,7 @@ pub fn TechnologyPage() -> impl IntoView {
 #[component]
 fn TechnologyHero() -> impl IntoView {
     view! {
-        <section id="tech-hero" class="page-hero">
+        <section id="tech-hero" class="page-hero first-screen">
             <div class="shell page-hero__grid">
                 <span class="index-mark">"02"</span>
                 <div class="page-hero__text">

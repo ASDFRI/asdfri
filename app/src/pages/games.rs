@@ -88,7 +88,7 @@ pub fn GamesPage() -> impl IntoView {
             name="description"
             content="ASDF Studio 的作品档案：蜂巢盛宴、逃离酒店、回家的路、月之暗面、温馨与钢铁集体。"
         />
-        <section class="page-hero">
+        <section class="page-hero first-screen">
             <div class="shell page-hero__grid">
                 <span class="index-mark">"04"</span>
                 <div class="page-hero__text">
