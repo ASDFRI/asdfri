@@ -19,7 +19,7 @@ pub async fn serve(app: Router, addr: SocketAddr, config: &ServerConfig) -> anyh
     }
 
     // 2) 同时启动 HTTP 重定向与 HTTPS 服务，任一失败即退出
-    tokio::try_join!(redirect(addr, config.http_redirect_port), https(app, addr, &config.tls))?;
+    tokio::try_join!(redirect(addr, config.http_port), https(app, addr, &config.tls))?;
 
     Ok(())
 }

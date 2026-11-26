@@ -3,11 +3,10 @@
 mod middleware;
 mod transport;
 
-use std::fs;
+use std::{fs, net::SocketAddr};
 
-use anyhow::anyhow;
 use axum::Router;
-use infra::{AppConfig, AppState, SiteTheme, auth::Keys, db, telemetry};
+use infra::{AppConfig, AppError, AppState, SiteTheme, auth::Keys, db, telemetry};
 use leptos::{config::LeptosOptions, prelude::provide_context};
 use leptos_axum::{LeptosRoutes, generate_route_list};
 use tower_http::services::ServeDir;
@@ -21,7 +20,7 @@ async fn main() -> anyhow::Result<()> {
 
     // 2) 加载应用配置与 Leptos 选项
     let config = AppConfig::load()?;
-    let leptos_options = resolve_leptos_options()?;
+    let leptos_options = leptos::config::get_configuration(None)?.leptos_options;
 
     // 3) 确保站点根目录与上传目录存在
     fs::create_dir_all(leptos_options.site_root.as_ref())?;
@@ -70,16 +69,24 @@ async fn main() -> anyhow::Result<()> {
         .with_state(state.clone());
 
     // 7) 挂载中间件并启动监听
-    serve(with_layers(router), state.leptos_options.site_addr, &state.config.server).await
+    let addr = listen_addr(&state.config, &state.leptos_options)?;
+    serve(with_layers(router), addr, &state.config.server).await
 }
 
-/// 解析 Leptos 运行时选项
+/// 解析监听地址
 ///
-/// 优先读取工作区 `Cargo.toml` 元数据（`LEPTOS_*` 环境变量仍然覆盖），
-/// 部署环境没有 `Cargo.toml` 时回退为纯环境变量。
-fn resolve_leptos_options() -> anyhow::Result<LeptosOptions> {
-    leptos::config::get_configuration(Some("Cargo.toml"))
-        .or_else(|_| leptos::config::get_configuration(None))
-        .map(|configuration| configuration.leptos_options)
-        .map_err(|e| anyhow!("Leptos 配置解析失败：{e}"))
+/// 开发构建沿用 cargo-leptos 注入的 [`LeptosOptions::site_addr`]；
+/// release 构建使用应用配置 `[server]`。两条配置链相互独立。
+fn listen_addr(config: &AppConfig, leptos_options: &LeptosOptions) -> Result<SocketAddr, AppError> {
+    #[cfg(debug_assertions)]
+    {
+        let _ = config;
+        Ok(leptos_options.site_addr)
+    }
+
+    #[cfg(not(debug_assertions))]
+    {
+        let _ = leptos_options;
+        config.server.listen_addr()
+    }
 }

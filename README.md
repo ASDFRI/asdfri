@@ -72,16 +72,16 @@ cargo leptos build --release
 - `target/release/server`（Windows 为 `server.exe`）
 - `target/site/`（静态资源、`pkg/asdfri.css`、wasm 与 JS）
 
-在缺少工作区 `Cargo.toml` 的部署目录中，通过环境变量提供运行时配置：
+部署目录无需工作区 `Cargo.toml`，release 构建的监听地址由 `config.toml` 提供：
 
-```sh
-LEPTOS_OUTPUT_NAME=asdfri
-LEPTOS_SITE_ROOT=/srv/asdfri/site
-LEPTOS_SITE_PKG_DIR=pkg
-LEPTOS_SITE_ADDR=0.0.0.0:3000
-APP_CONFIG=/srv/asdfri/config.toml
-RUST_LOG=info
+```toml
+[server]
+host = "0.0.0.0"
+http_port = 80
+https_port = 443
 ```
+
+将 `server` 二进制与 `target/site/` 一并分发，并在包含该目录的工作目录中运行。静态资源目录沿用 Leptos 官方约定（默认 `target/site`，可用 `LEPTOS_SITE_ROOT` 覆盖），不属于应用配置。开发构建（`cargo leptos watch`）使用 cargo-leptos 注入的 `LEPTOS_SITE_ADDR`，与 release 的 `[server]` 相互独立。
 
 确保 `[database].url` 指向的目录与 `[upload].dir` 可写。release 模式下 `[auth].jwt_secret` 为空会拒绝启动。
 
@@ -101,7 +101,17 @@ cd end2end && npx playwright test --project=chromium
 
 `config.toml` 在首次缺失时自动生成随机 JWT 密钥。若手动留空 `[auth].jwt_secret`，服务端会使用进程内临时密钥并在日志中告警，重启将使现有会话失效。
 
-TLS 默认关闭。本地 HTTPS 证书生成方式见 `self_signed_certs/README.md`。
+`[server]` 字段：
+
+| 字段 | 说明 |
+| --- | --- |
+| `host` | 监听主机，须为 IP 字面量 |
+| `http_port` | HTTP 端口；启用 TLS 时仅用于 HTTPS 重定向 |
+| `https_port` | HTTPS 端口；仅在启用 TLS 时生效 |
+
+`[server]` 仅作用于 release 构建；开发构建使用 cargo-leptos 注入的 `LEPTOS_SITE_ADDR`。
+
+TLS 默认关闭。启用后 `http_port` 与 `https_port` 不能相同。本地 HTTPS 证书生成方式见 `self_signed_certs/README.md`。
 
 ## 安全
 

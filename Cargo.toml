@@ -140,8 +140,8 @@ assets-dir = "public"
 # 用于优化 CSS 的 browserslist 查询
 browserquery = "defaults"
 
-# 服务端提供内容使用的 IP 与端口（例如 127.0.0.1:3000）
-# 需在服务端配置中使用
+# 开发构建的监听地址（经 LEPTOS_SITE_ADDR 注入）
+# release 构建以 config.toml 的 [server] 为准
 site-addr = "127.0.0.1:3000"
 
 # 自动重载监听的端口

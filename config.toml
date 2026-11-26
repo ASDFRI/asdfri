@@ -9,11 +9,15 @@ jwt_ttl_hours = 24
 max_connections = 5
 url = "sqlite:asdfri.db?mode=rwc"
 
+# 以下监听项用于 release 构建；开发构建使用 LEPTOS_SITE_ADDR
 [server]
-# 启用 TLS 时，HTTP 请求重定向到的端口
-http_redirect_port = 80
+# 监听主机，须为 IP 字面量
+host = "0.0.0.0"
+# 未启用 TLS 时直接提供 HTTP 服务；启用 TLS 时仅用于 HTTPS 重定向
+http_port = 80
+# HTTPS 监听端口，仅在启用 TLS 时生效
+https_port = 443
 
-# 监听地址由 LEPTOS_SITE_ADDR 环境变量或 Cargo.toml 的 site-addr 提供
 [server.tls]
 # 生成方式见 self_signed_certs/README.md；启用前请确认文件存在
 enabled = false

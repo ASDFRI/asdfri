@@ -1,5 +1,6 @@
 use std::{
     env, fs,
+    net::{IpAddr, SocketAddr},
     path::{Path, PathBuf},
 };
 
@@ -54,15 +55,42 @@ pub struct DatabaseConfig {
 
 /// 服务器监听与 TLS 配置
 ///
-/// 监听地址取自 `LeptosOptions::site_addr`（由 `LEPTOS_SITE_ADDR` 环境变量或
-/// `Cargo.toml` 的 `site-addr` 提供），此处只配置 TLS 与 HTTP 重定向。
+/// 监听地址仅在 release 构建生效；开发构建使用 cargo-leptos 注入的
+/// `LeptosOptions::site_addr`。静态资源布局由 Leptos 官方约定提供。
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(default)]
 pub struct ServerConfig {
-    /// 启用 TLS 时，HTTP 重定向监听端口
-    pub http_redirect_port: u16,
+    /// 监听主机，须为 IP 字面量（如 `0.0.0.0`、`127.0.0.1`）
+    pub host: String,
+    /// HTTP 监听端口；启用 TLS 时仅用于 HTTPS 重定向
+    pub http_port: u16,
+    /// HTTPS 监听端口；仅在启用 TLS 时生效
+    pub https_port: u16,
     /// TLS 证书与私钥配置
     pub tls: TlsConfig,
+}
+
+impl ServerConfig {
+    /// 实际监听端口：启用 TLS 时为 HTTPS 端口，否则为 HTTP 端口
+    pub fn listen_port(&self) -> u16 {
+        if self.tls.enabled {
+            self.https_port
+        } else {
+            self.http_port
+        }
+    }
+
+    /// release 构建的服务监听地址
+    ///
+    /// `host` 不是合法 IP 字面量时返回配置错误。
+    pub fn listen_addr(&self) -> Result<SocketAddr, AppError> {
+        let host = self.host.trim();
+        let ip = host
+            .parse::<IpAddr>()
+            .map_err(|_| AppError::Config(format!("[server].host 不是合法的 IP 地址：{host}")))?;
+
+        Ok(SocketAddr::new(ip, self.listen_port()))
+    }
 }
 
 /// TLS 证书配置
@@ -106,7 +134,9 @@ impl Default for DatabaseConfig {
 impl Default for ServerConfig {
     fn default() -> Self {
         Self {
-            http_redirect_port: 80,
+            host: "127.0.0.1".to_string(),
+            http_port: 80,
+            https_port: 443,
             tls: TlsConfig::default(),
         }
     }
@@ -207,14 +237,26 @@ impl AppConfig {
             return Err(AppError::Config("[upload].dir 不能为空".to_string()));
         }
 
-        if !self.server.tls.enabled {
-            return Ok(());
+        // 1) 监听地址与端口
+        self.server.listen_addr()?;
+
+        if self.server.http_port == 0 {
+            return Err(AppError::Config("[server].http_port 必须大于 0".to_string()));
         }
 
-        if self.server.http_redirect_port == 0 {
+        if self.server.tls.enabled && self.server.https_port == 0 {
+            return Err(AppError::Config("[server].https_port 必须大于 0".to_string()));
+        }
+
+        if self.server.tls.enabled && self.server.http_port == self.server.https_port {
             return Err(AppError::Config(
-                "启用 TLS 时 [server].http_redirect_port 必须大于 0".to_string(),
+                "[server].http_port 与 [server].https_port 不能相同".to_string(),
             ));
+        }
+
+        // 2) TLS 证书文件
+        if !self.server.tls.enabled {
+            return Ok(());
         }
 
         for (field, path) in [("cert", &self.server.tls.cert), ("key", &self.server.tls.key)] {
@@ -326,6 +368,42 @@ mod tests {
         let mut config = AppConfig::default();
         config.upload.dir = "  ".to_string();
         assert!(matches!(config.validate(), Err(AppError::Config(_))));
+    }
+
+    #[test]
+    fn rejects_invalid_listen_settings() {
+        let mut config = AppConfig::default();
+        config.server.host = "localhost".to_string();
+        assert!(matches!(config.validate(), Err(AppError::Config(_))));
+
+        let mut config = AppConfig::default();
+        config.server.http_port = 0;
+        assert!(matches!(config.validate(), Err(AppError::Config(_))));
+
+        let mut config = AppConfig::default();
+        config.server.tls.enabled = true;
+        config.server.https_port = 0;
+        assert!(matches!(config.validate(), Err(AppError::Config(_))));
+
+        let mut config = AppConfig::default();
+        config.server.tls.enabled = true;
+        config.server.http_port = config.server.https_port;
+        assert!(matches!(config.validate(), Err(AppError::Config(_))));
+    }
+
+    #[test]
+    fn listen_addr_follows_tls_state() {
+        let mut server = ServerConfig::default();
+        assert_eq!(server.listen_addr().unwrap().to_string(), "127.0.0.1:80");
+
+        server.host = " 0.0.0.0 ".to_string();
+        assert_eq!(server.listen_addr().unwrap().to_string(), "0.0.0.0:80");
+
+        server.host = "::1".to_string();
+        assert_eq!(server.listen_addr().unwrap().to_string(), "[::1]:80");
+
+        server.tls.enabled = true;
+        assert_eq!(server.listen_addr().unwrap().to_string(), "[::1]:443");
     }
 
     #[test]
