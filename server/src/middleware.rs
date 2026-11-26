@@ -27,8 +27,64 @@ async fn reject_pathless_target(req: Request, next: Next) -> Response {
     next.run(req).await
 }
 
+/// 依据请求路径与响应类型选择 `Cache-Control` 策略
+///
+/// 构建产物只有在文件名携带内容哈希时才能长期缓存；否则必须重新验证，
+/// 避免浏览器继续使用旧版 wasm 并与新页面组合导致水合失败。
+fn cache_control(path: &str, hashed_assets: bool, is_html: bool) -> &'static str {
+    // 1) 服务端函数与控制台可能返回按会话授权的内容，禁止任何缓存
+    if path.starts_with("/api/") || path == "/console" || path.starts_with("/console/") {
+        return "no-store";
+    }
+
+    // 2) 上传文件名由 UUID 生成且内容不可变
+    if path.starts_with("/uploads/") {
+        return "public, max-age=31536000, immutable";
+    }
+
+    // 3) 构建产物：哈希文件名可永久缓存，snippets 等未哈希文件仍须验证
+    if path.starts_with("/pkg/") {
+        return if hashed_assets && !path.starts_with("/pkg/snippets/") {
+            "public, max-age=31536000, immutable"
+        } else {
+            "no-cache"
+        };
+    }
+
+    // 4) SSR 文档须每次验证；其余静态资源（图片、视频等）允许短时缓存
+    if is_html {
+        "no-cache"
+    } else {
+        "public, max-age=3600"
+    }
+}
+
+/// 按路径为响应写入缓存策略
+///
+/// 仅缓存成功响应与 304；错误响应（含不存在的 `/pkg` 资源）一律禁止缓存，
+/// 避免把 404/500 当作长期资源或页面固定下来。
+async fn apply_cache_control(hashed_assets: bool, req: Request, next: Next) -> Response {
+    let path = req.uri().path().to_owned();
+    let mut response = next.run(req).await;
+    let status = response.status();
+    let is_html = response
+        .headers()
+        .get(header::CONTENT_TYPE)
+        .and_then(|value| value.to_str().ok())
+        .is_some_and(|value| value.starts_with("text/html"));
+
+    let policy = if status.is_success() || status == StatusCode::NOT_MODIFIED {
+        cache_control(&path, hashed_assets, is_html)
+    } else {
+        "no-store"
+    };
+
+    response.headers_mut().insert(header::CACHE_CONTROL, HeaderValue::from_static(policy));
+    response
+}
+
 /// 为路由挂载通用中间件
-pub fn with_layers<S>(router: Router<S>) -> Router<S>
+pub fn with_layers<S>(router: Router<S>, hashed_assets: bool) -> Router<S>
 where
     S: Clone + Send + Sync + 'static,
 {
@@ -47,6 +103,7 @@ where
         ))
         .layer(DefaultBodyLimit::disable())
         .layer(RequestBodyLimitLayer::new(MAX_BODY_BYTES))
+        .layer(middleware::from_fn(move |req, next| apply_cache_control(hashed_assets, req, next)))
         .layer(middleware::from_fn(reject_pathless_target))
 }
 
@@ -59,7 +116,7 @@ mod tests {
 
     /// 以指定请求目标探测完整中间件栈，返回最终状态码
     async fn probe(uri: &str) -> StatusCode {
-        let app = with_layers(Router::new().fallback(|| async { StatusCode::OK }));
+        let app = with_layers(Router::new().fallback(|| async { StatusCode::OK }), false);
 
         app.oneshot(Request::builder().uri(uri).body(Body::empty()).unwrap())
             .await
@@ -82,5 +139,68 @@ mod tests {
         // 1) asterisk-form 与 absolute-form 均携带路径分量，无需拦截
         assert_eq!(probe("*").await, StatusCode::OK);
         assert_eq!(probe("http://example.com").await, StatusCode::OK);
+    }
+
+    #[test]
+    fn hashed_build_assets_are_immutable() {
+        assert_eq!(
+            cache_control("/pkg/asdfri.abc123.js", true, false),
+            "public, max-age=31536000, immutable"
+        );
+        assert_eq!(cache_control("/pkg/asdfri.js", false, false), "no-cache");
+        assert_eq!(cache_control("/pkg/snippets/x.js", true, false), "no-cache");
+    }
+
+    #[test]
+    fn paths_map_to_distinct_cache_policies() {
+        assert_eq!(cache_control("/", true, true), "no-cache");
+        assert_eq!(cache_control("/api/login", false, false), "no-store");
+        assert_eq!(cache_control("/console", true, true), "no-store");
+        assert_eq!(cache_control("/console/theme", true, true), "no-store");
+        assert_eq!(cache_control("/console-extra", true, true), "no-cache");
+        assert_eq!(
+            cache_control("/uploads/x.png", false, false),
+            "public, max-age=31536000, immutable"
+        );
+        assert_eq!(cache_control("/ASDF.mp4", false, false), "public, max-age=3600");
+    }
+
+    #[tokio::test]
+    async fn writes_cache_control_header() {
+        let app = with_layers(Router::new().fallback(|| async { StatusCode::OK }), false);
+
+        let response = app
+            .oneshot(Request::builder().uri("/asset.png").body(Body::empty()).unwrap())
+            .await
+            .unwrap();
+
+        assert_eq!(response.headers().get(header::CACHE_CONTROL).unwrap(), "public, max-age=3600");
+    }
+
+    #[tokio::test]
+    async fn never_caches_error_responses() {
+        let app = with_layers(Router::new().fallback(|| async { StatusCode::NOT_FOUND }), true);
+
+        let response = app
+            .oneshot(Request::builder().uri("/pkg/asdfri.missing.js").body(Body::empty()).unwrap())
+            .await
+            .unwrap();
+
+        assert_eq!(response.headers().get(header::CACHE_CONTROL).unwrap(), "no-store");
+    }
+
+    #[tokio::test]
+    async fn revalidated_assets_keep_immutable_policy() {
+        let app = with_layers(Router::new().fallback(|| async { StatusCode::NOT_MODIFIED }), true);
+
+        let response = app
+            .oneshot(Request::builder().uri("/pkg/asdfri.abc.js").body(Body::empty()).unwrap())
+            .await
+            .unwrap();
+
+        assert_eq!(
+            response.headers().get(header::CACHE_CONTROL).unwrap(),
+            "public, max-age=31536000, immutable"
+        );
     }
 }

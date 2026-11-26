@@ -70,7 +70,8 @@ cargo leptos build --release
 生产产物：
 
 - `target/release/server`（Windows 为 `server.exe`）
-- `target/site/`（静态资源、`pkg/asdfri.css`、wasm 与 JS）
+- `target/release/hash.txt`（资源哈希清单，须与服务器二进制同目录）
+- `target/site/`（静态资源、带哈希的 CSS、wasm 与 JS）
 
 部署目录无需工作区 `Cargo.toml`，release 构建的监听地址由 `config.toml` 提供：
 
@@ -81,7 +82,7 @@ http_port = 80
 https_port = 443
 ```
 
-将 `server` 二进制与 `target/site/` 一并分发，并在包含该目录的工作目录中运行。静态资源目录沿用 Leptos 官方约定（默认 `target/site`，可用 `LEPTOS_SITE_ROOT` 覆盖），不属于应用配置。开发构建（`cargo leptos watch`）使用 cargo-leptos 注入的 `LEPTOS_SITE_ADDR`，与 release 的 `[server]` 相互独立。
+将 `server` 二进制、`hash.txt` 与 `target/site/` 一并分发，并在包含该目录的工作目录中运行。缺少 `hash.txt` 或站点产物与清单不一致时，服务端会拒绝启动并提示补全，避免 SSR 生成无效的资源地址。debug 与 release 共用 `target/site`，切换 profile 后须重新构建同一 profile 再启动。静态资源目录沿用 Leptos 官方约定（默认 `target/site`，可用 `LEPTOS_SITE_ROOT` 覆盖），不属于应用配置。开发构建（`cargo leptos watch`）使用 cargo-leptos 注入的 `LEPTOS_SITE_ADDR`，与 release 的 `[server]` 相互独立。
 
 确保 `[database].url` 指向的目录与 `[upload].dir` 可写。release 模式下 `[auth].jwt_secret` 为空会拒绝启动。
 
@@ -112,6 +113,21 @@ cd end2end && npx playwright test --project=chromium
 `[server]` 仅作用于 release 构建；开发构建使用 cargo-leptos 注入的 `LEPTOS_SITE_ADDR`。
 
 TLS 默认关闭。启用后 `http_port` 与 `https_port` 不能相同。本地 HTTPS 证书生成方式见 `self_signed_certs/README.md`。
+
+## 缓存
+
+构建产物启用 `hash-files`，JS、WASM 与 CSS 的文件名包含内容哈希，内容变化时 URL 随之变化，旧版本不会被复用。服务端按路径输出 `Cache-Control`：
+
+| 路径 | `Cache-Control` | 说明 |
+| --- | --- | --- |
+| `/pkg/*` | `public, max-age=31536000, immutable` | 哈希文件名，可永久缓存 |
+| `/pkg/snippets/*` | `no-cache` | wasm-bindgen 不哈希该目录 |
+| `/uploads/*` | `public, max-age=31536000, immutable` | 文件名为 UUID，内容不可变 |
+| `/api/*`、`/console`、`/console/*` | `no-store` | 按会话授权的内容 |
+| SSR 页面 | `no-cache` | 每次使用前重新验证 |
+| 其余静态资源 | `public, max-age=3600` | 图片、视频等，更新后最多延迟一小时 |
+
+错误响应统一使用 `no-store`，避免 404/500 被缓存。`/pkg` 由独立的 `ServeDir` 提供，保留 `If-None-Match` 与 `If-Modified-Since`，静态文件未变化时返回 304。
 
 ## 安全
 

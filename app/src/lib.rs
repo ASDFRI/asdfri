@@ -7,7 +7,7 @@ mod pages;
 mod site;
 
 use leptos::prelude::*;
-use leptos_meta::{Meta, MetaTags, Stylesheet, provide_meta_context};
+use leptos_meta::{HashedStylesheet, Meta, MetaTags, provide_meta_context};
 use leptos_router::{
     components::{ParentRoute, Route, Router, Routes},
     path,
@@ -33,6 +33,7 @@ pub fn shell(options: LeptosOptions) -> impl IntoView {
                 <meta charset="utf-8"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1"/>
                 <link rel="icon" href="/favicon.ico"/>
+                <HashedStylesheet id="leptos" options=options.clone()/>
                 <AutoReload options=options.clone()/>
                 <HydrationScripts options/>
                 <MetaTags/>
@@ -54,7 +55,6 @@ pub fn App() -> impl IntoView {
     Effect::new(move || crate::site::sync_document_variant(variant.get()));
 
     view! {
-        <Stylesheet id="leptos" href="/pkg/asdfri.css"/>
         <Meta name="color-scheme" content=move || color_scheme(variant.get())/>
         <Meta name="theme-color" content=move || theme_color(variant.get())/>
 

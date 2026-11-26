@@ -127,6 +127,10 @@ site-root = "target/site"
 # 默认 pkg
 site-pkg-dir = "pkg"
 
+# 为构建产物文件名追加内容哈希，使新旧版本拥有不同 URL
+# 部署时须将生成的 hash.txt 与服务器二进制放在同一目录
+hash-files = true
+
 # [可选] 源样式文件；以 .sass 或 .scss 结尾时由 dart-sass 编译，
 # 并经 Lightning CSS 优化后写入 <site-root>/<site-pkg>/asdfri.css
 style-file = "style/main.scss"
